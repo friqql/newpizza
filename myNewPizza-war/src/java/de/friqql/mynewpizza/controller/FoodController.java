@@ -5,13 +5,20 @@
  */
 package de.friqql.mynewpizza.controller;
 
-import de.friqql.mynewpizza.helper.FoodHelper;
-import de.friqql.mypizza.model.Food;
+
+import de.friqql.mynewpizza.ejb.FoodHelperRemote;
+import de.friqql.mynewpizza.ejb.UserHelperRemote;
+import de.friqql.mynewpizza.model.Food;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 /**
  *
@@ -22,7 +29,7 @@ import javax.faces.bean.SessionScoped;
 public class FoodController implements Serializable {
 
     private Food food;
-    private FoodHelper helper;
+    
     private int fId;
     private ArrayList<Food> foodlist;
     private ArrayList<Food> antipastilist;
@@ -34,7 +41,7 @@ public class FoodController implements Serializable {
      */
     public FoodController() {
         food = new Food();
-        helper = new FoodHelper();
+        
         foodlist = new ArrayList();
         antipastilist = new ArrayList();
         pizzalist = new ArrayList();
@@ -42,9 +49,9 @@ public class FoodController implements Serializable {
         for (int i = 1; i <= countFood(); i++) {
             foodlist.add((Food) getFoodById(i));
 
-            if (getFoodById(i).getFsection().equals("Pizza")) {
+            if (getFoodById(i).getFSection().equals("Pizza")) {
                 pizzalist.add(getFoodById(i));
-            } else if (getFoodById(i).getFsection().equals("Pasta")) {
+            } else if (getFoodById(i).getFSection().equals("Pasta")) {
                 pastalist.add(getFoodById(i));
             } else {
                 antipastilist.add(getFoodById(i));
@@ -66,20 +73,16 @@ public class FoodController implements Serializable {
     public void setFood(Food food) {
         this.food = food;
     }
-/**
- * Gibt den FoodHelper für den Datenbankzugriff zurück
- * @return 
- */
-    public FoodHelper getHelper() {
-        return helper;
+    private FoodHelperRemote helper() {
+        try {
+            Context c = new InitialContext();
+            return (FoodHelperRemote) c.lookup("java:global/myNewPizza/myNewPizza-ejb/FoodHelper!de.friqql.myNewPizza.FoodHelperRemote");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
     }
-/**
- * Setzt den FoodHelper für den Datenbankzugriff
- * @param helper 
- */
-    public void setHelper(FoodHelper helper) {
-        this.helper = helper;
-    }
+   
 /**
  * Gibt eine fId einer Speise zurück
  * @return 
@@ -159,7 +162,7 @@ public class FoodController implements Serializable {
  * @return 
  */
     public Food getFoodById(int fId) {
-        food = helper.getFoodById(fId);
+        food = helper().getFoodById(fId);
         return food;
     }
 /**
@@ -168,7 +171,7 @@ public class FoodController implements Serializable {
  */
     public int countFood() {
 
-        return helper.countFood();
+        return helper().countFood();
     }
 /**
  * Setzt die Speiseliste zurück
@@ -177,7 +180,7 @@ public class FoodController implements Serializable {
     public void reset(ArrayList<Food> dieListe) {
         for (Food f : dieListe) {
 
-            f.setFammount(0);
+            f.setFAmmount(0);
         }
 
     }

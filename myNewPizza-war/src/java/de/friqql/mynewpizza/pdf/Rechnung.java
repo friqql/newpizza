@@ -99,8 +99,8 @@ public class Rechnung extends HttpServlet {
                 document.open();
                 // Adresse
                 document.add(new Paragraph(userBean.getMyUser().getUTitle() + " " + userBean.getMyUser().getUFirstname() + " " + userBean.getMyUser().getULastname()));
-                document.add(new Paragraph(userBean.getMyUser().getUstreet() + " " + userBean.getMyUser().getUhouse()));
-                document.add(new Paragraph(userBean.getMyUser().getUplz() + " " + userBean.getMyUser().getUplace()));
+                document.add(new Paragraph(userBean.getMyUser().getUStreet() + " " + userBean.getMyUser().getUHouse()));
+                document.add(new Paragraph(userBean.getMyUser().getUPlz() + " " + userBean.getMyUser().getUPlace()));
 
                 // Überschrift
                 document.add(new Paragraph("Rechnung", boldFont));
@@ -122,14 +122,14 @@ public class Rechnung extends HttpServlet {
                 for (POrder tmp :  ol) {
 
                     if (tmp != null) {
-                        double mul = tmp.getOammount() * tmp.getOprice();
+                        double mul = tmp.getOAmmount() * tmp.getOPrice();
 
                         tableFood.addCell(new PdfPCell(new Phrase("Speise", smallFont)));
-                        tableFood.addCell(new PdfPCell(new Phrase(tmp.getOname(), smallFont)));
+                        tableFood.addCell(new PdfPCell(new Phrase(tmp.getOName(), smallFont)));
                         tableFood.addCell(new PdfPCell(new Phrase("Anzahl", smallFont)));
-                        tableFood.addCell(new PdfPCell(new Phrase(String.valueOf(tmp.getOammount()), smallFont)));
+                        tableFood.addCell(new PdfPCell(new Phrase(String.valueOf(tmp.getOAmmount()), smallFont)));
                         tableFood.addCell(new PdfPCell(new Phrase("Einzelpreis", smallFont)));
-                        tableFood.addCell(tmp.getOprice() + "0€ ");
+                        tableFood.addCell(tmp.getOPrice() + "0€ ");
                         tableFood.addCell(new PdfPCell(new Phrase("Zusammen", smallFont)));
                         tableFood.addCell(mul + "0€ ");
                     }
