@@ -63,7 +63,7 @@ private User helpUser;
     private UserHelperRemote uh() {
         try {
             Context c = new InitialContext();
-            return (UserHelperRemote) c.lookup("java:global/myNewPizza/myNewPizza-ejb/UserHelper!de.friqql.myNewPizza.UserHelperRemote");
+            return (UserHelperRemote) c.lookup("ejb/userHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -74,7 +74,7 @@ private User helpUser;
     private ConversionHelperRemote ch() {
         try {
             Context c = new InitialContext();
-            return (ConversionHelperRemote) c.lookup("java:global/FirstEEBusiness/FirstEEBusiness-ejb/HalloWorldSession!com.ibb.ejb.HalloWorldSessionRemote");
+            return (ConversionHelperRemote) c.lookup("ejb/conversionHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

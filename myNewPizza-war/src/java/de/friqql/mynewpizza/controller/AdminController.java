@@ -5,7 +5,8 @@
  */
 package de.friqql.mynewpizza.controller;
 
-import de.friqql.mynewpizza.ejb.UserHelper;
+
+import de.friqql.mynewpizza.ejb.UserHelperRemote;
 import de.friqql.mynewpizza.listener.ActiveSessionsListener;
 import de.friqql.mynewpizza.model.User;
 
@@ -17,11 +18,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -38,7 +44,7 @@ public class AdminController implements Serializable {
     private List<Map> sessionMaps;
  
     private User helpUser;
-    private UserHelper userHelper;
+  
     private String vermerk;
 
     public AdminController() {
@@ -47,7 +53,7 @@ public class AdminController implements Serializable {
         this.sessionMaps = new ArrayList();
       
         this.helpUser = new User();
-        this.userHelper = new UserHelper();
+    
         this.vermerk = "Alles Ok!";
     }
 /**
@@ -77,6 +83,19 @@ public class AdminController implements Serializable {
 
         return sessionMaps;
     }
+    
+     private UserHelperRemote uh() {
+        try {
+            Context c = new InitialContext();
+            return (UserHelperRemote) c.lookup("java:global/myNewPizza/mynewpizza-ejb/UserHelper!de.friqql.myNewPizza.UserHelperRemote");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+    
+    
+    
 /**
  * Gibt den Listener zurück
  * @return 
@@ -127,7 +146,7 @@ public class AdminController implements Serializable {
     public void setNewOtherPass(User helpUser) {
 
         helpUser.setUPassword(helpUser.getNewPass());
-        userHelper.changePassword(helpUser);
+        uh().changePassword(helpUser);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwort geändert", "Hat funktioniert!"));
     }
 
@@ -151,22 +170,13 @@ public class AdminController implements Serializable {
      * Gibt den UserHelper zurück der zum Datenbankzugriff dient
      * @return 
      */
-    public UserHelper getUserHelper() {
-        return userHelper;
-    }
-/**
- * Setzt den UserHelper
- * @param userHelper 
- */
-    public void setUserHelper(UserHelper userHelper) {
-        this.userHelper = userHelper;
-    }
+  
 /**
  * Setzt einen Vermerk über Probleme beim User
  * @param helpUser 
  */
     public void setVermerk(User helpUser) {
-        userHelper.setVermerk(helpUser);
+        uh().setVermerk(helpUser);
 
     }
 /**
@@ -176,7 +186,7 @@ public class AdminController implements Serializable {
  */
     public String getVermerkById(int id) {
 
-        this.vermerk = userHelper.getUserVermerkById(id);
+        this.vermerk = uh().getUserVermerkById(id);
         return vermerk;
     }
 

@@ -9,23 +9,23 @@ import de.friqql.mynewpizza.ejb.UserHelperRemote;
 import de.friqql.mynewpizza.model.User;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Stateful;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContexts;
+import javax.persistence.PersistenceContextType;
+
 import javax.persistence.Query;
 
 /**
  *
  * @author Teilnehmer
  */
-@Stateless
+@Stateless(mappedName="ejb/userHelper")
 public class UserHelper implements UserHelperRemote {
 
-    @PersistenceContext(unitName = "myNewPizza-libPU")
+    @PersistenceContext(unitName = "myNewPizza-libPU", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
     private User dbUser;
     private ConversionHelper cc;
@@ -91,7 +91,7 @@ public class UserHelper implements UserHelperRemote {
     @Override
     public List getAllUsers() {
         Query query = entityManager.createNamedQuery("User.findAll");
-        allUsers = (List) query.getSingleResult();
+        allUsers = (List) query.getResultList();
         return allUsers;
     }
 

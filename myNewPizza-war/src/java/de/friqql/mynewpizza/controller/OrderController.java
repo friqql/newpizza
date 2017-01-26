@@ -69,7 +69,7 @@ public class OrderController implements Serializable {
     private OrderHelperRemote oh() {
         try {
             Context c = new InitialContext();
-            return (OrderHelperRemote) c.lookup("java:global/myNewPizza/myNewPizza-ejb/OrderHelper!de.friqql.myNewPizza.OrderHelperRemote");
+            return (OrderHelperRemote) c.lookup("ejb/orderHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -80,7 +80,7 @@ public class OrderController implements Serializable {
     private ConversionHelperRemote ch() {
         try {
             Context c = new InitialContext();
-            return (ConversionHelperRemote) c.lookup("java:global/FirstEEBusiness/FirstEEBusiness-ejb/HalloWorldSession!com.ibb.ejb.HalloWorldSessionRemote");
+            return (ConversionHelperRemote) c.lookup("ejb/conversionHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

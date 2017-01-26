@@ -19,7 +19,7 @@ import javax.ejb.Stateless;
  *
  * @author Teilnehmer
  */
-@Stateless
+@Stateless(mappedName="ejb/conversionHelper")
 public class ConversionHelper implements ConversionHelperRemote {
 
   
