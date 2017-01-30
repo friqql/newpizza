@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.ejb;
+package de.friqql.ejb;
 
+
+import de.friqql.jb.ConversionHelperRemote;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;

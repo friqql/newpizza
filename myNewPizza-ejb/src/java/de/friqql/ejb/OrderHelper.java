@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.ejb;
+package de.friqql.ejb;
 
-import de.friqql.mynewpizza.model.POrder;
+
+
+
+import de.friqql.model.POrder;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,15 +24,22 @@ import javax.persistence.Query;
  */
 @Stateless(mappedName="ejb/orderHelper")
 public class OrderHelper {
-    @PersistenceContext(unitName = "myNewPizza-libPU", type= PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "myNewPizza-ejb", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 double sum;
 int num;
 private List<POrder> od;
+
+    public OrderHelper() {
+        od = new ArrayList();
+    }
     
     
+
+
+
     public double sumOrderedToday(){
-        Query query = entityManager.createNamedQuery("POrder.findAll");
+        Query query = entityManager.createQuery("SELECT p FROM POrder p");
         od = (List)query.getResultList();
        sum= 0.00;
             for(POrder o:od){
@@ -43,8 +55,17 @@ private List<POrder> od;
     }
     
 public int numOrderedToday(){
-    Query query = entityManager.createNamedQuery("POrder.count");
-    return (int) query.getSingleResult();
+    num = 0;
+    Query query = entityManager.createQuery("SELECT p FROM POrder p");
+    od = (List)query.getResultList();
+    for(POrder o:od)
+    {
+        if(o.getOSince().equals(new Date())){
+            num++;
+        }
+    }
+    
+    return num;
 }
 public void storeOrder(POrder saveOrder){
     
