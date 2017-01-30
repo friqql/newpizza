@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.model;
+package de.friqql.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -26,89 +26,104 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Teilnehmer
  */
 @Entity
-@Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"uUsername"})})
+@Table(catalog = "pizzeriafaces", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-    , @NamedQuery(name = "User.findByUId", query = "SELECT u FROM User u WHERE u.uId = :uId")
-    , @NamedQuery(name = "User.findByUUsername", query = "SELECT u FROM User u WHERE u.uUsername = :uUsername")
-    , @NamedQuery(name = "User.findByUPassword", query = "SELECT u FROM User u WHERE u.uPassword = :uPassword")
-    , @NamedQuery(name = "User.findByUTitle", query = "SELECT u FROM User u WHERE u.uTitle = :uTitle")
-    , @NamedQuery(name = "User.findByUFirstname", query = "SELECT u FROM User u WHERE u.uFirstname = :uFirstname")
-    , @NamedQuery(name = "User.findByULastname", query = "SELECT u FROM User u WHERE u.uLastname = :uLastname")
-    , @NamedQuery(name = "User.findByUStreet", query = "SELECT u FROM User u WHERE u.uStreet = :uStreet")
-    , @NamedQuery(name = "User.findByUHouse", query = "SELECT u FROM User u WHERE u.uHouse = :uHouse")
-    , @NamedQuery(name = "User.findByUPlz", query = "SELECT u FROM User u WHERE u.uPlz = :uPlz")
-    , @NamedQuery(name = "User.findByUPlace", query = "SELECT u FROM User u WHERE u.uPlace = :uPlace")
-    , @NamedQuery(name = "User.findByURole", query = "SELECT u FROM User u WHERE u.uRole = :uRole")
-    , @NamedQuery(name = "User.findByUSince", query = "SELECT u FROM User u WHERE u.uSince = :uSince")
-    , @NamedQuery(name = "User.findByUVermerk", query = "SELECT u FROM User u WHERE u.uVermerk = :uVermerk")
-    , @NamedQuery(name = "User.getVermerkById", query = "select u.uVermerk FROM User u WHERE u.uVermerk =:uVermerk")    
-    , @NamedQuery(name = "User.count", query = "select count(u.uUsername) from User u")
-    
-})
-
-  
-public class User implements Serializable {
+    @NamedQuery(name = "Usr.findAll", query = "SELECT u FROM Usr u")
+    , @NamedQuery(name = "Usr.findByUId", query = "SELECT u FROM Usr u WHERE u.uId = :uId")
+    , @NamedQuery(name = "Usr.findByUUsrname", query = "SELECT u FROM Usr u WHERE u.uUsrname = :uUsrname")
+    , @NamedQuery(name = "Usr.findByUPassword", query = "SELECT u FROM Usr u WHERE u.uPassword = :uPassword")
+    , @NamedQuery(name = "Usr.findByUTitle", query = "SELECT u FROM Usr u WHERE u.uTitle = :uTitle")
+    , @NamedQuery(name = "Usr.findByUFirstname", query = "SELECT u FROM Usr u WHERE u.uFirstname = :uFirstname")
+    , @NamedQuery(name = "Usr.findByULastname", query = "SELECT u FROM Usr u WHERE u.uLastname = :uLastname")
+    , @NamedQuery(name = "Usr.findByUStreet", query = "SELECT u FROM Usr u WHERE u.uStreet = :uStreet")
+    , @NamedQuery(name = "Usr.findByUHouse", query = "SELECT u FROM Usr u WHERE u.uHouse = :uHouse")
+    , @NamedQuery(name = "Usr.findByUPlz", query = "SELECT u FROM Usr u WHERE u.uPlz = :uPlz")
+    , @NamedQuery(name = "Usr.findByUPlace", query = "SELECT u FROM Usr u WHERE u.uPlace = :uPlace")
+    , @NamedQuery(name = "Usr.findByURole", query = "SELECT u FROM Usr u WHERE u.uRole = :uRole")
+    , @NamedQuery(name = "Usr.findByUSince", query = "SELECT u FROM Usr u WHERE u.uSince = :uSince")
+    , @NamedQuery(name = "Usr.findByUVermerk", query = "SELECT u FROM Usr u WHERE u.uVermerk = :uVermerk")
+    , @NamedQuery(name = "Usr.findByNewPass", query = "SELECT u FROM Usr u WHERE u.newPass = :newPass")
+    , @NamedQuery(name = "Usr.findByOldPass", query = "SELECT u FROM Usr u WHERE u.oldPass = :oldPass")
+    , @NamedQuery(name = "Usr.findByPassAgain", query = "SELECT u FROM Usr u WHERE u.passAgain = :passAgain")})
+public class Usr implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
     private Integer uId;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
-    private String uUsername;
+    @NotNull
+    @Size(min = 1, max = 45)
+    private String uUsrname;
     @Basic(optional = false)
-    @Column(nullable = false, length = 100)
+    @NotNull
+    @Size(min = 1, max = 100)
     private String uPassword;
     @Basic(optional = false)
-    @Column(nullable = false, length = 5)
+    @NotNull
+    @Size(min = 1, max = 5)
     private String uTitle;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uFirstname;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uLastname;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uStreet;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uHouse;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uPlz;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uPlace;
     @Basic(optional = false)
-    @Column(nullable = false, length = 45)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String uRole;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     @Temporal(TemporalType.DATE)
     private Date uSince;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String uVermerk;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String newPass;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     private String oldPass;
-    private String pwagain;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    private String passAgain;
 
-    public User() {
+    public Usr() {
     }
 
-    public User(Integer uId) {
+    public Usr(Integer uId) {
         this.uId = uId;
     }
 
-    public User(Integer uId, String uUsername, String uPassword, String uTitle, String uFirstname, String uLastname, String uStreet, String uHouse, String uPlz, String uPlace, String uRole, Date uSince, String uVermerk) {
+    public Usr(Integer uId, String uUsrname, String uPassword, String uTitle, String uFirstname, String uLastname, String uStreet, String uHouse, String uPlz, String uPlace, String uRole, Date uSince, String uVermerk, String newPass, String oldPass, String passAgain) {
         this.uId = uId;
-        this.uUsername = uUsername;
+        this.uUsrname = uUsrname;
         this.uPassword = uPassword;
         this.uTitle = uTitle;
         this.uFirstname = uFirstname;
@@ -120,34 +135,11 @@ public class User implements Serializable {
         this.uRole = uRole;
         this.uSince = uSince;
         this.uVermerk = uVermerk;
-    }
-
-    public String getNewPass() {
-        return newPass;
-    }
-
-    public void setNewPass(String newPass) {
         this.newPass = newPass;
-    }
-
-    public String getOldPass() {
-        return oldPass;
-    }
-
-    public void setOldPass(String oldPass) {
         this.oldPass = oldPass;
+        this.passAgain = passAgain;
     }
 
-    public String getPwagain() {
-        return pwagain;
-    }
-
-    public void setPwagain(String pwagain) {
-        this.pwagain = pwagain;
-    }
-
-    
-    
     public Integer getUId() {
         return uId;
     }
@@ -156,12 +148,12 @@ public class User implements Serializable {
         this.uId = uId;
     }
 
-    public String getUUsername() {
-        return uUsername;
+    public String getUUsrname() {
+        return uUsrname;
     }
 
-    public void setUUsername(String uUsername) {
-        this.uUsername = uUsername;
+    public void setUUsrname(String uUsrname) {
+        this.uUsrname = uUsrname;
     }
 
     public String getUPassword() {
@@ -252,6 +244,30 @@ public class User implements Serializable {
         this.uVermerk = uVermerk;
     }
 
+    public String getNewPass() {
+        return newPass;
+    }
+
+    public void setNewPass(String newPass) {
+        this.newPass = newPass;
+    }
+
+    public String getOldPass() {
+        return oldPass;
+    }
+
+    public void setOldPass(String oldPass) {
+        this.oldPass = oldPass;
+    }
+
+    public String getPassAgain() {
+        return passAgain;
+    }
+
+    public void setPassAgain(String passAgain) {
+        this.passAgain = passAgain;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -262,10 +278,10 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
+        if (!(object instanceof Usr)) {
             return false;
         }
-        User other = (User) object;
+        Usr other = (Usr) object;
         if ((this.uId == null && other.uId != null) || (this.uId != null && !this.uId.equals(other.uId))) {
             return false;
         }
@@ -274,7 +290,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "de.friqql.mynewpizza.model.User[ uId=" + uId + " ]";
+        return "de.friqql.model.Usr[ uId=" + uId + " ]";
     }
-
+    
 }

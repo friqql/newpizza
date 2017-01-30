@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.model;
+package de.friqql.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Teilnehmer
  */
 @Entity
-@Table(name = "p_order")
+@Table(name = "p_order", catalog = "pizzeriafaces", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "POrder.findAll", query = "SELECT p FROM POrder p")
@@ -38,44 +39,46 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "POrder.findByOIp", query = "SELECT p FROM POrder p WHERE p.oIp = :oIp")
     , @NamedQuery(name = "POrder.findByOPrice", query = "SELECT p FROM POrder p WHERE p.oPrice = :oPrice")
     , @NamedQuery(name = "POrder.findByOSince", query = "SELECT p FROM POrder p WHERE p.oSince = :oSince")
-    , @NamedQuery(name = "POrder.count", query = "SELECT count(p.oId)FROM POrder as p WHERE p.oSince= :oDate")
-})
-
-
+    , @NamedQuery(name = "POrder.findByOZwischensumme", query = "SELECT p FROM POrder p WHERE p.oZwischensumme = :oZwischensumme")})
 public class POrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
     private Integer oId;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private int ouId;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private int oFoodId;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private int oAmmount;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String oName;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String oSessionId;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String oIp;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private double oPrice;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     @Temporal(TemporalType.DATE)
     private Date oSince;
-    private Double ozwischensumme;
+    @Basic(optional = false)
+    @NotNull
+    private double oZwischensumme;
+
     public POrder() {
     }
 
@@ -83,7 +86,7 @@ public class POrder implements Serializable {
         this.oId = oId;
     }
 
-    public POrder(Integer oId, int ouId, int oFoodId, int oAmmount, String oName, String oSessionId, String oIp, double oPrice, Date oSince) {
+    public POrder(Integer oId, int ouId, int oFoodId, int oAmmount, String oName, String oSessionId, String oIp, double oPrice, Date oSince, double oZwischensumme) {
         this.oId = oId;
         this.ouId = ouId;
         this.oFoodId = oFoodId;
@@ -93,6 +96,7 @@ public class POrder implements Serializable {
         this.oIp = oIp;
         this.oPrice = oPrice;
         this.oSince = oSince;
+        this.oZwischensumme = oZwischensumme;
     }
 
     public Integer getOId() {
@@ -167,16 +171,14 @@ public class POrder implements Serializable {
         this.oSince = oSince;
     }
 
-    public Double getOzwischensumme() {
-        return ozwischensumme;
+    public double getOZwischensumme() {
+        return oZwischensumme;
     }
 
-    public void setOzwischensumme(Double ozwischensumme) {
-        this.ozwischensumme = ozwischensumme;
+    public void setOZwischensumme(double oZwischensumme) {
+        this.oZwischensumme = oZwischensumme;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -184,8 +186,6 @@ public class POrder implements Serializable {
         return hash;
     }
 
-    
-    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -201,7 +201,7 @@ public class POrder implements Serializable {
 
     @Override
     public String toString() {
-        return "de.friqql.mynewpizza.model.POrder[ oId=" + oId + " ]";
+        return "de.friqql.model.POrder[ oId=" + oId + " ]";
     }
     
 }

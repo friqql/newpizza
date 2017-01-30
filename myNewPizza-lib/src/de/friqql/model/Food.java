@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.model;
+package de.friqql.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -21,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Teilnehmer
  */
 @Entity
+@Table(catalog = "pizzeriafaces", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Food.findAll", query = "SELECT f FROM Food f")
@@ -28,30 +31,27 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Food.findByFName", query = "SELECT f FROM Food f WHERE f.fName = :fName")
     , @NamedQuery(name = "Food.findByFPrice", query = "SELECT f FROM Food f WHERE f.fPrice = :fPrice")
     , @NamedQuery(name = "Food.findByFSection", query = "SELECT f FROM Food f WHERE f.fSection = :fSection")
-    , @NamedQuery(name = "Food.findByFAmmount", query = "SELECT f FROM Food f WHERE f.fAmmount = :fAmmount")
-        , @NamedQuery(name = "Food.count", query = "select count(f.fName) from Food f")
-    
-    
-})
+    , @NamedQuery(name = "Food.findByFAmmount", query = "SELECT f FROM Food f WHERE f.fAmmount = :fAmmount")})
 public class Food implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(nullable = false)
     private Integer fId;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String fName;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private double fPrice;
     @Basic(optional = false)
-    @Column(nullable = false, length = 75)
+    @NotNull
+    @Size(min = 1, max = 75)
     private String fSection;
     @Basic(optional = false)
-    @Column(nullable = false)
+    @NotNull
     private int fAmmount;
 
     public Food() {
@@ -131,7 +131,7 @@ public class Food implements Serializable {
 
     @Override
     public String toString() {
-        return "de.friqql.mynewpizza.model.Food[ fId=" + fId + " ]";
+        return "de.friqql.model.Food[ fId=" + fId + " ]";
     }
     
 }
