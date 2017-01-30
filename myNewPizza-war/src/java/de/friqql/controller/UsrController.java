@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.controller;
+package de.friqql.controller;
 
 
-import de.friqql.mynewpizza.ejb.ConversionHelperRemote;
-import de.friqql.mynewpizza.ejb.UserHelperRemote;
-import de.friqql.mynewpizza.model.User;
-import de.friqql.mynewpizza.view.message.MessagesView;
+
+import de.friqql.jb.ConversionHelperRemote;
+import de.friqql.jb.UsrHelperRemote;
+import de.friqql.model.Usr;
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,40 +31,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
  *
  * @author Teilnehmer
  */
 @ManagedBean
 @SessionScoped
-public class UserController implements Serializable {
+public class UsrController implements Serializable {
 
-    private User myUser;
+    private Usr myUsr;
    
    
     private  NavigationController nc;
-    private MessagesView mv;
-    private List<User> allCustomers;
-    private int customerNumber;
-private User helpUser;
-    
-    public UserController() {
-        myUser = new User();
-       
-        nc = new NavigationController();
-        mv = new MessagesView();
-       
-        allCustomers = new ArrayList();
-        allCustomers = allCustomers();
-        customerNumber = 0;
-        helpUser = new User();
-    }
+    private MessagesController mv;
+    private List<Usr> allCustomers;
+   
 
-    
-    private UserHelperRemote uh() {
+ private UsrHelperRemote uh() {
         try {
             Context c = new InitialContext();
-            return (UserHelperRemote) c.lookup("ejb/userHelper");
+            return (UsrHelperRemote) c.lookup("ejb/userHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -80,20 +68,41 @@ private User helpUser;
             throw new RuntimeException(ne);
         }
     }
+    
+    public UsrController() {
+        
+       
+        
+    }
+    
+    @PostConstruct
+    public void init(){
+        myUsr = new Usr();
+       
+        nc = new NavigationController();
+        mv = new MessagesController();
+       
+       
+        allCustomers = new ArrayList();
+        allCustomers = allCustomers();
+    }
+
+    
+   
     /**
-     * Gibt den aktuellen User zurück
+     * Gibt den aktuellen Usr zurück
      * @return 
      */
-    public User getMyUser() {
+    public Usr getMyUsr() {
 
-        return myUser;
+        return myUsr;
     }
 /**
- * Setzt den aktuellen User
- * @param myUser 
+ * Setzt den aktuellen Usr
+ * @param myUsr 
  */
-    public void setMyUser(User myUser) {
-        this.myUser = myUser;
+    public void setMyUsr(Usr myUsr) {
+        this.myUsr = myUsr;
     }
 /**
  * Dient zum Login
@@ -101,21 +110,17 @@ private User helpUser;
     public void login() {
         try {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-            HttpSession session = request.getSession();
-            
-            
-            
-            request.login(myUser.getUUsername(), myUser.getUPassword());
-            this.myUser= uh().getUserByUsername(myUser.getUUsername());
+            request.login(myUsr.getUUsrname(), myUsr.getUPassword());
+            myUsr = uh().getUsrByUsrname(myUsr.getUUsrname());
+           
         } catch (ServletException ex) {
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsrController.class.getName()).log(Level.SEVERE, null, ex);
         }
        
 
     }
 /**
- * Testet, ob ein User eingeloggt ist
+ * Testet, ob ein Usr eingeloggt ist
  * @return 
  */
     public boolean isLogedIn() {
@@ -127,7 +132,7 @@ private User helpUser;
 
     }
 /**
- * Testet ob ein User ein Kunde ist
+ * Testet ob ein Usr ein Kunde ist
  * @return 
  */
     public boolean isCustomer() {
@@ -147,41 +152,41 @@ private User helpUser;
             request.logout();
         } catch (ServletException ex) {
             
-            Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsrController.class.getName()).log(Level.SEVERE, null, ex);
             nc.toIndex();
         }
     }
 
     /**
-     * Setzt bei der Registrierung den User zurück
+     * Setzt bei der Registrierung den Usr zurück
      */
     public void reset() {
-        myUser.setUUsername("");
-        myUser.setUPassword("");
-        myUser.setUTitle("");
-        myUser.setUFirstname("");
-        myUser.setULastname("");
-        myUser.setUStreet("");
-        myUser.setUHouse("");
-        myUser.setUPlz("");
+        myUsr.setUUsrname("");
+        myUsr.setUPassword("");
+        myUsr.setUTitle("");
+        myUsr.setUFirstname("");
+        myUsr.setULastname("");
+        myUsr.setUStreet("");
+        myUsr.setUHouse("");
+        myUsr.setUPlz("");
 
-        myUser.setUPlace("");
-        myUser.setURole("");
+        myUsr.setUPlace("");
+        myUsr.setURole("");
         nc.toIndex();
     }
 
     /**
-     * Liste aller User (auch Admins, Name aus historischen Gründen)
+     * Liste aller Usr (auch Admins, Name aus historischen Gründen)
      * @return 
      */
-    public List<User> getAllCustomers() {
+    public List<Usr> getAllCustomers() {
         return allCustomers;
     }
 /**
- * Setzt die Liste aller User
+ * Setzt die Liste aller Usr
  * @param allCustomers 
  */
-    public void setAllCustomers(List<User> allCustomers) {
+    public void setAllCustomers(List<Usr> allCustomers) {
         this.allCustomers = allCustomers;
     }
 
@@ -197,11 +202,11 @@ private User helpUser;
         return "toIndex";
     }
 /**
- * Dient zur Registrierung, wenn der Username nicht vergeben ist
+ * Dient zur Registrierung, wenn der Usrname nicht vergeben ist
  */
     public void register() {
-if(uh().getUserByUsername(myUser.getUUsername())==null){
-        uh().register(myUser);
+if(uh().getUsrByUsrname(myUsr.getUUsrname())==null){
+        uh().register(myUsr);
         mv.reg_s();
 }
 
@@ -211,10 +216,10 @@ else{
 
     }
 /**
- * Updatet die Userdaten
+ * Updatet die Usrdaten
  */
-    public void updateUser(){
-        uh().updateUser(myUser);
+    public void updateUsr(){
+        uh().updateUsr(myUsr);
         
     }
     
@@ -223,23 +228,25 @@ else{
      * Setzt ein neues Passwort
      */
     public void setNewPass() {
-        if (ch().hash(myUser.getOldPass()).equals(myUser.getUPassword())) {
+       
+        
+        if (myUsr.getOldPass().equals(myUsr.getUPassword())) {
             
             
-            myUser.setUPassword(myUser.getNewPass());
-            uh().changePassword(myUser);
+            
+            uh().changePassword(myUsr);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwort geändert", "Hat funktioniert!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes! Altes PW eingegeben: " +ch().hash(myUsr.getOldPass())+"Tatsächliches altes PW: "+myUsr.getUPassword()+""));
         }
     }
     /**
-     * Die Liste aller User
+     * Die Liste aller Usr
      * @return 
      */
-    public List<User> allCustomers(){
-        allCustomers=uh().getAllUsers();
-        uh().setAllUsers(new ArrayList());
+    public List<Usr> allCustomers(){
+        allCustomers=uh().getAllUsrs();
+        uh().setAllUsrs(new ArrayList());
         return allCustomers;
     
     }

@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.controller;
+package de.friqql.controller;
 
-import de.friqql.mynewpizza.ejb.ConversionHelperRemote;
-import de.friqql.mynewpizza.ejb.OrderHelperRemote;
-import de.friqql.mynewpizza.model.Food;
-import de.friqql.mynewpizza.model.POrder;
-import de.friqql.mynewpizza.model.User;
-import de.friqql.mynewpizza.view.message.MessagesView;
+
+import de.friqql.jb.ConversionHelperRemote;
+import de.friqql.jb.OrderHelperRemote;
+
+import de.friqql.model.Food;
+import de.friqql.model.POrder;
+import de.friqql.model.Usr;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,34 +40,20 @@ public class OrderController implements Serializable {
 
     private POrder myOrder;
     private ArrayList<POrder> orderL;
-    private MessagesView mv;
+    private MessagesController mv;
     private double sum;
     private double sum2;
-    private User myUser;
+    private Usr myUsr;
     
     
     private String ipAddress;
     private String sessionId;
     private NavigationController nc;
-    private UserController uc;
+    private UsrController uc;
 
     /**
      * Der Konstruktor des OrderControllers
      */
-    public OrderController() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        HttpSession session = request.getSession();
-        this.myOrder = new POrder();
-        this.orderL = new ArrayList();
-        this.mv = new MessagesView();
-        this.sum = 0.00;
-        this.sum2 = 0.00;
-        this.uc = new UserController();
-        
-        this.myUser = new User();
-        this.nc = new NavigationController();
-    }
-
     private OrderHelperRemote oh() {
         try {
             Context c = new InitialContext();
@@ -74,6 +62,25 @@ public class OrderController implements Serializable {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
+    }
+    
+    public OrderController() {
+        
+    }
+
+    @PostConstruct
+    public void init(){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpSession session = request.getSession();
+        this.myOrder = new POrder();
+        this.orderL = new ArrayList();
+        this.mv = new MessagesController();
+        this.sum = 0.00;
+        this.sum2 = 0.00;
+        this.uc = new UsrController();
+        
+        this.myUsr = new Usr();
+        this.nc = new NavigationController();
     }
     
     
@@ -174,7 +181,7 @@ public class OrderController implements Serializable {
 
         int i = 0;
         sum = 0.00;
-
+myOrder.setOZwischensumme(0.00);
         for (Food f : dieListe) {
 
             if (f.getFAmmount() > 0) {
@@ -185,12 +192,12 @@ public class OrderController implements Serializable {
                 myOrder.setOIp(request.getRemoteAddr());
                 myOrder.setOSessionId(session.getId());
                 myOrder.setOPrice(f.getFPrice());
-                myOrder.setOzwischensumme(f.getFAmmount() * f.getFPrice());
+                myOrder.setOZwischensumme(f.getFAmmount() * f.getFPrice());
                 myOrder.setOSince(ch().ConvertDate(new Date()));
-                uc = (UserController) session.getAttribute("userController");
-                myUser = uc.getMyUser();
-                myOrder.setOuId(myUser.getUId());
-                sum += myOrder.getOzwischensumme();
+                uc = (UsrController) session.getAttribute("userController");
+                myUsr = uc.getMyUsr();
+                myOrder.setOuId(myUsr.getUId());
+                sum += myOrder.getOZwischensumme();
                 orderL.add(i, myOrder);
                 myOrder = new POrder();
 

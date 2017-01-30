@@ -1,4 +1,4 @@
-package de.friqql.mynewpizza.listener;
+package de.friqql.listener;
 
 import java.util.Map;
 import java.util.HashMap;

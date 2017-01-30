@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.controller;
+package de.friqql.controller;
 
 
-import de.friqql.mynewpizza.ejb.FoodHelperRemote;
-import de.friqql.mynewpizza.model.Food;
+
+
+
+import de.friqql.jb.FoodHelperRemote;
+import de.friqql.model.Food;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -51,7 +55,7 @@ public class FoodController implements Serializable {
      * Der Konstruktor des FoodControllers
      */
     public FoodController() {
-        init();
+     
     }
     @PostConstruct
     public void init(){

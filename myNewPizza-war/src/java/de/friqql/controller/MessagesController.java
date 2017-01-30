@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.view.message;
+package de.friqql.controller;
 
-import de.friqql.mynewpizza.controller.LocaleController;
+import de.friqql.controller.LocaleController;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -18,11 +18,11 @@ import javax.servlet.http.HttpSession;
  * @author Teilnehmer
  */
 @ManagedBean
-public class MessagesView {
+public class MessagesController {
      
     private LocaleController lc;
 
-    public MessagesView() {
+    public MessagesController() {
   
         this.lc = new LocaleController();
     }

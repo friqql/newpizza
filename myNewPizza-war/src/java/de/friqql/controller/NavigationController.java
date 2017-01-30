@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.friqql.mynewpizza.controller;
+package de.friqql.controller;
 
 
 import java.io.IOException;

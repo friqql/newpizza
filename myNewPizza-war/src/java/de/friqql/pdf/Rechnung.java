@@ -1,4 +1,4 @@
-package de.friqql.mynewpizza.pdf;
+package de.friqql.pdf;
 
 /*
     Author     : Andreas Hellrich
@@ -12,9 +12,10 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import de.friqql.mynewpizza.controller.OrderController;
-import de.friqql.mynewpizza.controller.UserController;
-import de.friqql.mynewpizza.model.POrder;
+import de.friqql.model.POrder;
+import de.friqql.controller.OrderController;
+import de.friqql.controller.UsrController;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -72,7 +73,7 @@ public class Rechnung extends HttpServlet {
 
         // Bean
         OrderController orderBean = null;
-        UserController userBean = null;
+        UsrController userBean = null;
         // Formatierung
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
         Font semiBoldFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
@@ -91,16 +92,16 @@ public class Rechnung extends HttpServlet {
             HttpSession sess = req.getSession();
             if (sess.getAttribute("orderController") != null|| sess.getAttribute("userController")!=null) {
                 orderBean = (OrderController) sess.getAttribute("orderController");
-                userBean = (UserController) sess.getAttribute("userController");
+                userBean = (UsrController) sess.getAttribute("userController");
                 document = new Document();
                 bos = new ByteArrayOutputStream();
                 PdfWriter.getInstance(document, bos);
 
                 document.open();
                 // Adresse
-                document.add(new Paragraph(userBean.getMyUser().getUTitle() + " " + userBean.getMyUser().getUFirstname() + " " + userBean.getMyUser().getULastname()));
-                document.add(new Paragraph(userBean.getMyUser().getUStreet() + " " + userBean.getMyUser().getUHouse()));
-                document.add(new Paragraph(userBean.getMyUser().getUPlz() + " " + userBean.getMyUser().getUPlace()));
+                document.add(new Paragraph(userBean.getMyUsr().getUTitle() + " " + userBean.getMyUsr().getUFirstname() + " " + userBean.getMyUsr().getULastname()));
+                document.add(new Paragraph(userBean.getMyUsr().getUStreet() + " " + userBean.getMyUsr().getUHouse()));
+                document.add(new Paragraph(userBean.getMyUsr().getUPlz() + " " + userBean.getMyUsr().getUPlace()));
 
                 // Überschrift
                 document.add(new Paragraph("Rechnung", boldFont));

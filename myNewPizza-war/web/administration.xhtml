@@ -30,7 +30,7 @@
                     <h:commandButton action='#{localeController.switchLang("en")}' value="#{msg.len}" style="background-color:red;color:white;font-size:14px; width:100%;" /><br/>
                     <ui:fragment rendered="#{request.isUserInRole('Admin')}"><br /></ui:fragment>
                        <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin")}'/><br/>
-                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{userController.logedIn}'/><br/>
+                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{usrController.logedIn}'/><br/>
                     <h:commandButton action="#{navigationController.toIndex()}" value="#{msg.zrk}" style="background-color:red;color:white;font-size:14px; width:100%;" />
                 </h:form>  
 </p:layoutUnit>
@@ -88,24 +88,24 @@
            
                   <h:form>   
                       
-                      <h:selectOneMenu value="#{adminController.helpUser}" id="selectUser"  converter="userCNV">  
+                      <h:selectOneMenu value="#{adminController.helpUsr}" id="selectUsr"  converter="userCNV">  
                 <f:selectItem itemLabel="#{msg.slo}" itemValue="" />  
-                <f:selectItems value="#{userController.allCustomers}" var="myUser" itemLabel=" #{myUser.uid}   #{myUser.uusername}" itemValue="#{myUser}"/>  
+                <f:selectItems value="#{usrController.allCustomers}" var="myUsr" itemLabel=" #{myUsr.UId}   #{myUsr.UUsrname}" itemValue="#{myUsr}"/>  
             </h:selectOneMenu>
                  
                       <h:panelGrid columns="3" >
                          
                         <h:outputText value="#{msg.npw}"/>        
-             <h:inputSecret id="inNewPw" value="#{adminController.helpUser.newPass}"  />
-             <h:commandButton action="#{adminController.setNewOtherPass(adminController.helpUser)}" value="Passwort ändern" style="background-color:red;color:white;" />
+                        <h:inputSecret id="inNewPw" value="#{adminController.helpUsr.newPass}"  />
+             <h:commandButton action="#{adminController.setNewOtherPass(adminController.helpUsr)}" value="Passwort ändern" style="background-color:red;color:white;" />
                                             
                       <h:outputText value="#{msg.avm}"/>
-                         <h:inputText id="outSperr" value="#{adminController.getVermerkById(adminController.helpUser.uid)}" readonly="true" />
-                          <h:commandButton action="#{adminController.getVermerkById(adminController.helpUser.uid)}" value="Sperrvermerk anzeigen" style="background-color:red;color:white;" />
+                      <h:inputText id="outSperr" value="#{adminController.getVermerkById(adminController.helpUsr.UId)}" readonly="true" />
+                          <h:commandButton action="#{adminController.getVermerkById(adminController.helpUsr.UId)}" value="Sperrvermerk anzeigen" style="background-color:red;color:white;" />
                          
                       <h:outputText value="#{msg.nvm}"/>
-                         <h:inputText id="inSperr" value="#{adminController.helpUser.uvermerk}" />
-                          <h:commandButton action="#{adminController.setVermerk(adminController.helpUser)}" value="Sperrvermerk hinzufügen" style="background-color:red;color:white;" />
+                         <h:inputText id="inSperr" value="#{adminController.helpUsr.UVermerk}" />
+                          <h:commandButton action="#{adminController.setVermerk(adminController.helpUsr)}" value="Sperrvermerk hinzufügen" style="background-color:red;color:white;" />
                           
                       </h:panelGrid>
              

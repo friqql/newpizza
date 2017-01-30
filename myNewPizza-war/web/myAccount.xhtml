@@ -29,7 +29,7 @@
                     <h:commandButton action='#{localeController.switchLang("en")}' value="#{msg.len}" style="background-color:red;color:white;font-size:14px; width:100%;" /><br/>
                     <ui:fragment rendered="#{request.isUserInRole('Admin')}"><br /></ui:fragment>
                        <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin")}'/><br/>
-                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{userController.logedIn}'/><br/>
+                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{usrController.logedIn}'/><br/>
                     <h:commandButton action="#{navigationController.toIndex()}" value="#{msg.zrk}" style="background-color:red;color:white;font-size:14px; width:100%;"/>
                 </h:form>  
 </p:layoutUnit>
@@ -45,10 +45,10 @@
                       <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                      
                       <h:outputText value="#{msg.apw}"/>
-                              <h:inputText id="inOldPw" value="#{userController.myUser.oldPass}" required="true" /> 
+                              <h:inputText id="inOldPw" value="#{usrController.myUsr.oldPass}" required="true" /> 
                       <h:outputText value="#{msg.npw}"/>        
-             <h:inputText id="inNewPw" value="#{userController.myUser.newPass}" required="true" /> 
-       <h:commandButton action="#{userController.setNewPass()}" value="#{msg.pae}" style="background-color:red;color:white;" />
+             <h:inputText id="inNewPw" value="#{usrController.myUsr.newPass}" required="true" /> 
+       <h:commandButton action="#{usrController.setNewPass()}" value="#{msg.pae}" style="background-color:red;color:white;" />
                 </h:form>
       
             
@@ -71,20 +71,20 @@
                                 	
 
                                 <h:outputLabel for="inFirstname" value="#{msg.vn}" />
-                                <h:inputText id="inFirstname" value="#{userController.myUser.ufirstname}" required="true" />
+                                <h:inputText id="inFirstname" value="#{usrController.myUsr.UFirstname}" required="true" />
                                 <h:outputLabel for="inLastname" value="#{msg.nn}" />
-                                <h:inputText  id="inLastname" value="#{userController.myUser.ulastname}" required="true" />
+                                <h:inputText  id="inLastname" value="#{usrController.myUsr.ULastname}" required="true" />
                                 <h:outputLabel for="inStreet" value="#{msg.str}" />
-                                <h:inputText id="inStreet" value="#{userController.myUser.ustreet}" required="true" />
+                                <h:inputText id="inStreet" value="#{usrController.myUsr.UStreet}" required="true" />
                                 <h:outputLabel for="inHouse" value="#{msg.hn}" />
-                                <h:inputText  id="inHouse" value="#{userController.myUser.uhouse}" required="true" />
+                                <h:inputText  id="inHouse" value="#{usrController.myUsr.UHouse}" required="true" />
                                 <h:outputLabel for="inPlz" value="#{msg.plz}" />
-                                <h:inputText id="inPlz" value="#{userController.myUser.uplz}" required="true" />
+                                <h:inputText id="inPlz" value="#{usrController.myUsr.UPlz}" required="true" />
                                 <h:outputLabel for="inPlace" value="#{msg.ort}" />
-                                <h:inputText  id="inPlace" value="#{userController.myUser.uplace}" required="true" />
+                                <h:inputText  id="inPlace" value="#{usrController.myUsr.UPlace}" required="true" />
 
 
-                                      <h:commandButton action="#{userController.updateUser()}" value="#{msg.aae}" style="background-color:red;color:white;" />
+                                      <h:commandButton action="#{usrController.updateUsr()}" value="#{msg.aae}" style="background-color:red;color:white;" />
                             </h:panelGrid>
                         </h:form>
 

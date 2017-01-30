@@ -20,9 +20,9 @@
 
         <p:layout fullPage="true" >
             <p:layoutUnit position="north"   collapsible="false">
-             <h:outputText value="#{msg.servus}" style="font-size:25px" rendered="#{not userController.logedIn}"/>
-                    <h:outputText value="#{msg.mes}"  rendered="#{not userController.logedIn}"/>
-                    <h:outputText value="#{msg.servus}, #{userController.myUser.UUsername}" style="font-size:30px" rendered="#{userController.logedIn}"/>
+             <h:outputText value="#{msg.servus}" style="font-size:25px" rendered="#{not usrController.logedIn}"/>
+                    <h:outputText value="#{msg.mes}"  rendered="#{not usrController.logedIn}"/>
+                    <h:outputText value="#{msg.servus}, #{usrController.myUsr.UUsrname}" style="font-size:30px" rendered="#{usrController.logedIn}"/>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             </p:layoutUnit>
             
@@ -36,8 +36,8 @@
                     <h:commandButton action='#{localeController.switchLang("en")}' value="#{msg.len}" style="background-color:red;color:white;font-size:14px; width:100%;" /><br/>
                     <ui:fragment rendered="#{request.isUserInRole('Admin')}"><br /></ui:fragment>
                     <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin")}'/><br/>
-                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{userController.logedIn}'/><br/>
-                    <h:commandButton action="#{userController.logOut()}" value="#{msg.loo}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered="#{userController.logedIn}"/>
+                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{usrController.logedIn}'/><br/>
+                    <h:commandButton action="#{usrController.logOut()}" value="#{msg.loo}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered="#{usrController.logedIn}"/>
                 </h:form>  
             </p:layoutUnit>
 
@@ -48,7 +48,7 @@
 
             <p:layoutUnit position="center"   collapsible="false">
 
-                <p:accordionPanel rendered="#{not userController.logedIn}" >
+                <p:accordionPanel rendered="#{not usrController.logedIn}" >
                     <!-- ***************************************EINLOGGEN***************************************-->
                     <p:tab title="#{msg.lin}" titleStyle="background-color:red" >
 
@@ -56,15 +56,15 @@
 
 
                             <h:panelGrid columns="3" style="font-size:14px;">
-                                <h:outputLabel for="inUsername" value="#{msg.ben}" />
-                                <h:inputText id="inUsername" value="#{userController.myUser.UUsername}" style="background-color:lavender" required="true" requiredMessage='#{messagesView.bnnl()}'/>
-                                <p:message for="inUsername"/>
+                                <h:outputLabel for="inUsrname" value="#{msg.ben}" />
+                                <h:inputText id="inUsrname" value="#{usrController.myUsr.UUsrname}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.bnnl()}'/>
+                                <p:message for="inUsrname"/>
                                 <h:outputLabel for="inPassword" value="#{msg.pw}" />
 
-                                <h:inputSecret id="inPassword" value="#{userController.myUser.UPassword}" style="background-color:lavender" required="true" requiredMessage='#{messagesView.pwnl()}'/>
+                                <h:inputSecret id="inPassword" value="#{usrController.myUsr.UPassword}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.pwnl()}'/>
                                 <p:message for="inPassword"/>
 
-                                <h:commandButton action="#{userController.login()}" value="#{msg.lin}" style="background-color:red;color:white;font-size:14px;"/>
+                                <h:commandButton action="#{usrController.login()}" value="#{msg.lin}" style="background-color:red;color:white;font-size:14px;"/>
                             </h:panelGrid>
 
 
@@ -81,34 +81,34 @@
                             <h:panelGrid columns="6" style="font-size:14px;">
 
 
-                                <h:outputLabel for="inUsername" value="#{msg.ben}" />
-                                <h:inputText id="inUsername" value="#{userController.myUser.UUsername}" required="true" requiredMessage='#{messagesView.reg_e()} #{messagesView.bnnl()}'/>
+                                <h:outputLabel for="inUsrname" value="#{msg.ben}" />
+                                <h:inputText id="inUsrname" value="#{usrController.myUsr.UUsrname}" required="true" requiredMessage='#{messagesController.reg_e()} #{messagesController.bnnl()}'/>
                                 <h:outputLabel for="inPassword" value="#{msg.pw}" />
-                                <h:inputSecret id="inPassword" value="#{userController.myUser.UPassword}" required="true"   requiredMessage='#{messagesView.pwnl()}'/>
+                                <h:inputSecret id="inPassword" value="#{usrController.myUsr.UPassword}" required="true"   requiredMessage='#{messagesController.pwnl()}'/>
 
 
                                 <h:outputLabel for="inTitle" value="#{msg.sex}" />
-                                <h:selectOneMenu id="inTitle" value="#{userController.myUser.UTitle}">
+                                <h:selectOneMenu id="inTitle" value="#{usrController.myUsr.UTitle}">
                                     <f:selectItem itemValue="#{msg.hrn}" itemLabel="#{msg.man}" />
                                     <f:selectItem itemValue="#{msg.fra}" itemLabel="#{msg.fem}" />	   							
                                 </h:selectOneMenu>	
 
                                 <h:outputLabel for="inFirstname" value="#{msg.vn}" />
-                                <h:inputText id="inFirstname" value="#{userController.myUser.UFirstname}" required="true" requiredMessage='#{messagesView.fnnl()}' />
+                                <h:inputText id="inFirstname" value="#{usrController.myUsr.UFirstname}" required="true" requiredMessage='#{messagesController.fnnl()}' />
                                 <h:outputLabel for="inLastname" value="#{msg.nn}" />
-                                <h:inputText  id="inLastname" value="#{userController.myUser.ULastname}" required="true" requiredMessage='#{messagesView.lnnl()}'/>
+                                <h:inputText  id="inLastname" value="#{usrController.myUsr.ULastname}" required="true" requiredMessage='#{messagesController.lnnl()}'/>
                                 <h:outputLabel for="inStreet" value="#{msg.str}" />
-                                <h:inputText id="inStreet" value="#{userController.myUser.UStreet}" required="true" requiredMessage='#{messagesView.stnl()}'/>
+                                <h:inputText id="inStreet" value="#{usrController.myUsr.UStreet}" required="true" requiredMessage='#{messagesController.stnl()}'/>
                                 <h:outputLabel for="inHouse" value="#{msg.hn}" />
-                                <h:inputText  id="inHouse" value="#{userController.myUser.UHouse}" required="true" requiredMessage='#{messagesView.hnnl()}' />
+                                <h:inputText  id="inHouse" value="#{usrController.myUsr.UHouse}" required="true" requiredMessage='#{messagesController.hnnl()}' />
                                 <h:outputLabel for="inPlz" value="#{msg.plz}" />
-                                <h:inputText id="inPlz" value="#{userController.myUser.UPlz}" required="true" requiredMessage='#{messagesView.plznl()}' />
+                                <h:inputText id="inPlz" value="#{usrController.myUsr.UPlz}" required="true" requiredMessage='#{messagesController.plznl()}' />
                                 <h:outputLabel for="inPlace" value="#{msg.ort}" />
-                                <h:inputText  id="inPlace" value="#{userController.myUser.UPlace}" required="true" requiredMessage='#{messagesView.ornl()}'/>
+                                <h:inputText  id="inPlace" value="#{usrController.myUsr.UPlace}" required="true" requiredMessage='#{messagesController.ornl()}'/>
 
 
-                                <h:commandButton action="#{userController.reset()}" value="#{msg.res}" style="background-color:red;color:white;"/>
-                                <h:commandButton action="#{userController.register()}" value="#{msg.reg}" style="background-color:red;color:white;"/>
+                                <h:commandButton action="#{usrController.reset()}" value="#{msg.res}" style="background-color:red;color:white;"/>
+                                <h:commandButton action="#{usrController.register()}" value="#{msg.reg}" style="background-color:red;color:white;"/>
                             </h:panelGrid>
                         </h:form>
                     </p:tab>
@@ -145,7 +145,7 @@
                         </h:column>
 
 
-                        <h:column rendered="#{userController.logedIn}">
+                        <h:column rendered="#{usrController.logedIn}">
                             <f:facet name="header" >#{msg.men} </f:facet>
 
                             <h:inputText value="#{food.FAmmount}"/>
@@ -154,11 +154,11 @@
 
                     </h:dataTable>
 
-                    <h:commandButton action="#{orderController.addToOrder(foodController.foodlist)}" value="#{msg.plus}" rendered="#{userController.logedIn}" style="background-color:red;color:white;"/>
+                    <h:commandButton action="#{orderController.addToOrder(foodController.foodlist)}" value="#{msg.plus}" rendered="#{usrController.logedIn}" style="background-color:red;color:white;"/>
 
 
 
-                    <h:commandButton action="#{foodController.reset(foodController.foodlist)}" value="#{msg.res}" rendered="#{userController.logedIn}" style="background-color:red;color:white;">
+                    <h:commandButton action="#{foodController.reset(foodController.foodlist)}" value="#{msg.res}" rendered="#{usrController.logedIn}" style="background-color:red;color:white;">
                         <f:actionListener binding="#{orderController.reset()}" />
                     </h:commandButton>
 
