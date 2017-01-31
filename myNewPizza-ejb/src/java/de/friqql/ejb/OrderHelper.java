@@ -8,11 +8,14 @@ package de.friqql.ejb;
 
 
 
+import de.friqql.jb.OrderHelperRemote;
 import de.friqql.model.POrder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -22,8 +25,9 @@ import javax.persistence.Query;
  *
  * @author Teilnehmer
  */
-@Stateless(mappedName="ejb/orderHelper")
-public class OrderHelper {
+@Stateful(mappedName="ejb/orderHelper")
+@SessionScoped
+public class OrderHelper implements OrderHelperRemote {
     @PersistenceContext(unitName = "myNewPizza-ejb", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 double sum;
@@ -39,10 +43,11 @@ private List<POrder> od;
 
 
     public double sumOrderedToday(){
-        Query query = entityManager.createQuery("SELECT p FROM POrder p");
+        Query query = entityManager.createQuery("SELECT p FROM POrder p WHERE p.oSince = CURRENT_DATE");
         od = (List)query.getResultList();
        sum= 0.00;
             for(POrder o:od){
+                
                 sum= sum+(o.getOAmmount()*o.getOPrice());
             }
         
@@ -56,18 +61,19 @@ private List<POrder> od;
     
 public int numOrderedToday(){
     num = 0;
-    Query query = entityManager.createQuery("SELECT p FROM POrder p");
+    Query query = entityManager.createQuery("SELECT p FROM POrder p WHERE p.oSince = CURRENT_DATE");
     od = (List)query.getResultList();
     for(POrder o:od)
     {
-        if(o.getOSince().equals(new Date())){
+        
             num++;
-        }
+       
     }
     
     return num;
 }
 public void storeOrder(POrder saveOrder){
-    
+    entityManager.merge(saveOrder);
+    entityManager.flush();
 }
 }

@@ -15,8 +15,10 @@ import de.friqql.model.Food;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateful;
 
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,8 +29,8 @@ import javax.persistence.Query;
  *
  * @author Teilnehmer
  */
-@Stateless (mappedName="ejb/foodHelper")
-
+@Stateful (mappedName="ejb/foodHelper")
+@SessionScoped
 public class FoodHelper implements FoodHelperRemote{
 
     

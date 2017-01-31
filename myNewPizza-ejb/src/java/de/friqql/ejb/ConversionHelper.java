@@ -15,13 +15,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 
 /**
  *
  * @author Teilnehmer
  */
-@Stateless(mappedName="ejb/conversionHelper")
+@Stateful(mappedName="ejb/conversionHelper")
+@SessionScoped
 public class ConversionHelper implements ConversionHelperRemote {
 
   

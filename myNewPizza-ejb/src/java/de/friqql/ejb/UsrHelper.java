@@ -12,8 +12,10 @@ import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateful;
 
 import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 import javax.persistence.EntityManager;
 
 import javax.persistence.PersistenceContext;
@@ -25,7 +27,8 @@ import javax.persistence.Query;
  *
  * @author Teilnehmer
  */
-@Stateless(mappedName = "ejb/userHelper")
+@Stateful (mappedName = "ejb/userHelper")
+@SessionScoped
 public class UsrHelper implements UsrHelperRemote {
 
     @PersistenceContext(unitName = "myNewPizza-ejb", type = PersistenceContextType.TRANSACTION)
@@ -45,13 +48,18 @@ this.cc = new ConversionHelper();
 
     @Override
     public void register(Usr helpUsr) {
-        this.dbUsr = helpUsr;
-//        
-        helpUsr.setURole("Customer");
-        helpUsr.setUVermerk("Alles Ok!");
-        helpUsr.setUSince(new Date());
+      
+        { this.dbUsr = helpUsr;
+        dbUsr.setUUsrname(dbUsr.getUUsrname().toLowerCase());
+        dbUsr.setURole("Customer");
+        dbUsr.setUVermerk("Alles Ok!");
+       dbUsr.setUSince(new Date());
+       dbUsr.setUPassword(cc.hash(dbUsr.getUPassword()));
+         dbUsr.setNewPass("");
+        dbUsr.setOldPass("");
+        dbUsr.setPassAgain("");
         entityManager.persist(helpUsr);
-        entityManager.flush();
+        entityManager.flush();}
 
     }
 
@@ -66,10 +74,11 @@ this.cc = new ConversionHelper();
 
     @Override
     public void changePassword(Usr helpUsr) {
-        this.dbUsr = helpUsr;
-        entityManager.merge(dbUsr);
-        dbUsr.setPassAgain("");
+        this.dbUsr = helpUsr; 
         dbUsr.setUPassword(cc.hash(dbUsr.getNewPass()));
+        dbUsr.setPassAgain("");
+        dbUsr.setNewPass("");
+        dbUsr.setOldPass("");
         entityManager.merge(dbUsr);
         entityManager.flush();
 
@@ -83,6 +92,7 @@ this.cc = new ConversionHelper();
         for (Usr u : allUsrs) {
             if (u.getUId().equals((Integer) uid)) {
                 dbUsr = u;
+                return dbUsr;
             }
         }
 
@@ -98,6 +108,12 @@ this.cc = new ConversionHelper();
         for (Usr u : allUsrs) {
             if (u.getUUsrname().equals(username)) {
                 dbUsr = u;
+                return dbUsr;
+            }
+            
+            else
+            {
+                
             }
         }
         
@@ -115,11 +131,7 @@ this.cc = new ConversionHelper();
     @Override
     public List getAllUsrs() {
         Query query = entityManager.createQuery("SELECT u FROM Usr u");
-        allUsrs = (List) query.getResultList();
-        
-        for(Usr u:allUsrs) {
-            entityManager.refresh(u);
-        }
+        allUsrs = (List<Usr>) query.getResultList();      
         return allUsrs;
     }
 
@@ -135,7 +147,11 @@ this.cc = new ConversionHelper();
 
     @Override
     public void setVermerk(Usr helpUsr) {
-       helpUsr.setUVermerk(helpUsr.getUVermerk());
+        this.dbUsr = helpUsr;
+       dbUsr.setUVermerk(helpUsr.getUVermerk());
+       dbUsr.setPassAgain("");
+        dbUsr.setNewPass("");
+        dbUsr.setOldPass("");
         entityManager.merge(dbUsr);
         entityManager.flush();
     }
@@ -143,7 +159,7 @@ this.cc = new ConversionHelper();
     @Override
     public String getUsrVermerkById(int id) {
 
-       
+       allUsrs = getAllUsrs();
         for (Usr u : allUsrs) {
             if (u.getUId().equals((Integer) id)) {
                 helpstring = u.getUVermerk();
