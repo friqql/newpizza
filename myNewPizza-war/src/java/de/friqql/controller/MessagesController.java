@@ -6,9 +6,12 @@
 package de.friqql.controller;
 
 import de.friqql.controller.LocaleController;
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,14 +20,16 @@ import javax.servlet.http.HttpSession;
  *
  * @author Teilnehmer
  */
-@ManagedBean
-public class MessagesController {
+@Named("messagesController")
+@javax.enterprise.context.SessionScoped
+public class MessagesController implements Serializable{
      
-    private LocaleController lc;
+    @Inject
+    private LocaleController localeController;
 
     public MessagesController() {
-  
-        this.lc = new LocaleController();
+  localeController = new LocaleController();
+        
     }
     
     
@@ -71,7 +76,7 @@ public class MessagesController {
        * @return 
        */
       public String pwnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Passwort darf nicht leer sein!";
           }
@@ -85,7 +90,7 @@ public class MessagesController {
        * @return 
        */
        public String bnnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Benutzername darf nicht leer sein!";
           }
@@ -99,7 +104,7 @@ public class MessagesController {
         * @return 
         */
        public String fnnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Vorname darf nicht leer sein!";
           }
@@ -113,7 +118,7 @@ public class MessagesController {
         * @return 
         */
        public String lnnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Nachname darf nicht leer sein!";
           }
@@ -127,7 +132,7 @@ public class MessagesController {
        * @return 
        */
       public String stnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Straße darf nicht leer sein!";
           }
@@ -141,7 +146,7 @@ public class MessagesController {
        * @return 
        */
       public String hnnl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Hausnummer darf nicht leer sein!";
           }
@@ -155,7 +160,7 @@ public class MessagesController {
        * @return 
        */
       public String plznl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Postleitzahl darf nicht leer sein!";
           }
@@ -169,7 +174,7 @@ public class MessagesController {
        * @return 
        */
       public String ornl(){
-          if (lc.getLanguage().getLanguage().equals("de")){
+          if (localeController.getLanguage().getLanguage().equals("de")){
           
           return "Das Feld Ort darf nicht leer sein!";
           }
@@ -179,6 +184,16 @@ public class MessagesController {
           }
       }
       
+      public String nnli(){
+          if (localeController.getLanguage().getLanguage().equals("de")){
+          
+          return "Login fehlgeschlagen!";
+          }
+          else{
+            
+          return "login failed!"; 
+          }
+      }
       
       
 }

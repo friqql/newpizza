@@ -30,14 +30,14 @@
           <c:forEach var="od" begin="0" end="#{orderController.orderL.size()-1}" step="1">
               <h:outputText value="#{msg.pos} #{od+1}:" style="font-weight: 700"/>
               
-              <h:outputText value="#{orderController.orderL.get(od).oName} "/>
-              <h:outputText value="Anzahl: #{orderController.orderL.get(od).oAmmount} "/>
+              <h:outputText value="#{orderController.orderL.get(od).OName} "/>
+              <h:outputText value="Anzahl: #{orderController.orderL.get(od).OAmmount} "/>
               <h:outputText value="#{msg.ezp} "/>
-              <h:outputText value="#{orderController.orderL.get(od).oPrice}">
+              <h:outputText value="#{orderController.orderL.get(od).OPrice}">
                    <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
               </h:outputText>
                <h:outputText value="#{msg.zsm} "/>
-              <h:outputText value="#{orderController.orderL.get(od).oZwischensumme}">
+              <h:outputText value="#{orderController.orderL.get(od).OZwischensumme}">
                    <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
               </h:outputText>
            

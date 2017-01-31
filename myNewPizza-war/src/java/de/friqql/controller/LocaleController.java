@@ -9,13 +9,14 @@ import java.util.Locale;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 /**
  *
  * @author Teilnehmer
  */
-@ManagedBean
-@SessionScoped
+@Named("localeController")
+@javax.enterprise.context.SessionScoped
 public class LocaleController implements Serializable {
 
     private Locale language;

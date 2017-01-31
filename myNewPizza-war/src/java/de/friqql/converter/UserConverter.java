@@ -22,14 +22,15 @@ import javax.servlet.http.HttpSession;
 @FacesConverter(forClass = de.friqql.model.Usr.class, value = "userCNV")
 public class UserConverter implements Converter {
 
-
+@Inject
+UsrController usrController;
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession session=request.getSession();
        
-        UsrController uc =(UsrController)session.getAttribute("usrController");
+        UsrController uc =usrController;
         List<Usr> leute=uc.getAllCustomers();
         if (submittedValue.trim().equals("")) {
             return null;

@@ -26,8 +26,7 @@ import javax.servlet.http.HttpSession;
  * @author Teilnehmer
  */
 @Named("navigationController")
-@ManagedBean
-@SessionScoped
+@javax.enterprise.context.SessionScoped
 public class NavigationController implements Serializable {
 
     /**
@@ -69,7 +68,7 @@ public class NavigationController implements Serializable {
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         HttpSession session = request.getSession();
         try {
-           response.sendRedirect("/myPizza/rechnung");
+           response.sendRedirect("/myNewPizza-war/rechnung");
         } catch (IOException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
         }

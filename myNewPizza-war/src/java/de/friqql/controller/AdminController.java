@@ -30,6 +30,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -40,8 +41,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Teilnehmer
  */
-@ManagedBean
-@SessionScoped
+@Named("adminController")
+@javax.enterprise.context.SessionScoped
 public class AdminController implements Serializable {
 
     private ActiveSessionsListener asl;
@@ -186,7 +187,7 @@ public class AdminController implements Serializable {
  */
     public void setVermerk(Usr helpUsr) {
         uh().setVermerk(helpUsr);
-
+helpUsr.setUVermerk("");
     }
 /**
  * Gibt einen Vermerk zurück
@@ -196,6 +197,7 @@ public class AdminController implements Serializable {
     public String getVermerkById(int id) {
 
         this.vermerk = uh().getUsrVermerkById(id);
+        
         return vermerk;
     }
 

@@ -23,6 +23,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -34,13 +36,14 @@ import javax.servlet.http.HttpSession;
  *
  * @author Teilnehmer
  */
-@ManagedBean
-@SessionScoped
+@Named("orderController")
+@javax.enterprise.context.SessionScoped
 public class OrderController implements Serializable {
 
     private POrder myOrder;
     private ArrayList<POrder> orderL;
-    private MessagesController mv;
+    @Inject
+    private MessagesController messagesController;
     private double sum;
     private double sum2;
     private Usr myUsr;
@@ -48,8 +51,10 @@ public class OrderController implements Serializable {
     
     private String ipAddress;
     private String sessionId;
-    private NavigationController nc;
-    private UsrController uc;
+    
+    
+    @Inject
+    private UsrController usrController;
 
     /**
      * Der Konstruktor des OrderControllers
@@ -63,6 +68,16 @@ public class OrderController implements Serializable {
             throw new RuntimeException(ne);
         }
     }
+
+    public UsrController getuC() {
+        return usrController;
+    }
+
+    public void setuC(UsrController uC) {
+        this.usrController = uC;
+    }
+    
+    
     
     public OrderController() {
         
@@ -74,13 +89,13 @@ public class OrderController implements Serializable {
         HttpSession session = request.getSession();
         this.myOrder = new POrder();
         this.orderL = new ArrayList();
-        this.mv = new MessagesController();
+        
         this.sum = 0.00;
         this.sum2 = 0.00;
-        this.uc = new UsrController();
+        this.messagesController = new MessagesController();
         
         this.myUsr = new Usr();
-        this.nc = new NavigationController();
+        
     }
     
     
@@ -181,6 +196,7 @@ public class OrderController implements Serializable {
 
         int i = 0;
         sum = 0.00;
+        this.myOrder = new POrder();
 myOrder.setOZwischensumme(0.00);
         for (Food f : dieListe) {
 
@@ -194,8 +210,8 @@ myOrder.setOZwischensumme(0.00);
                 myOrder.setOPrice(f.getFPrice());
                 myOrder.setOZwischensumme(f.getFAmmount() * f.getFPrice());
                 myOrder.setOSince(ch().ConvertDate(new Date()));
-                uc = (UsrController) session.getAttribute("userController");
-                myUsr = uc.getMyUsr();
+                
+                myUsr = usrController.getMyUsr();
                 myOrder.setOuId(myUsr.getUId());
                 sum += myOrder.getOZwischensumme();
                 orderL.add(i, myOrder);
@@ -209,9 +225,9 @@ myOrder.setOZwischensumme(0.00);
         try {
 
             if (!orderL.isEmpty()) {
-                response.sendRedirect("/myPizza/zusammenfassung.xhtml");
+                response.sendRedirect("/myNewPizza-war/zusammenfassung.xhtml");
             } else {
-                mv.order_e();
+                messagesController.order_e();
             }
         } catch (IOException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
@@ -250,7 +266,7 @@ myOrder.setOZwischensumme(0.00);
                 oh().storeOrder(o);
             }
 
-            response.sendRedirect("/myPizza/danke.xhtml");
+            response.sendRedirect("/myNewPizza-war/danke.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
         }

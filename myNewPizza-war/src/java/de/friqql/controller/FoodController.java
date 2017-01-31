@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -27,8 +28,8 @@ import javax.naming.NamingException;
  *
  * @author Teilnehmer
  */
-@ManagedBean
-@SessionScoped
+@Named("foodController")
+@javax.enterprise.context.SessionScoped
 public class FoodController implements Serializable {
 
     private Food food;

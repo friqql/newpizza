@@ -20,6 +20,7 @@ import de.friqql.controller.UsrController;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -32,6 +33,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +46,9 @@ import javax.servlet.http.HttpSession;
  * @author Andreas Hellrich
  */
 @WebServlet(name = "myPdf", urlPatterns = "/rechnung")
-public class Rechnung extends HttpServlet {
-
+public class Rechnung extends HttpServlet implements Serializable{
+@Inject OrderController orderController;
+@Inject UsrController usrController;
     /**
      * Erstellt eine PDF
      *
@@ -72,8 +75,8 @@ public class Rechnung extends HttpServlet {
         PdfPTable tableSumme;
 
         // Bean
-        OrderController orderBean = null;
-        UsrController userBean = null;
+        OrderController orderBean = orderController;
+        UsrController userBean = usrController;
         // Formatierung
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
         Font semiBoldFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
@@ -82,17 +85,16 @@ public class Rechnung extends HttpServlet {
 
         // Chunks und Phrasen
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/mm/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
 
         //****************************** Erstellung**************************************
         try {
             resp.setContentType("application/pdf");
 
-            HttpSession sess = req.getSession();
-            if (sess.getAttribute("orderController") != null|| sess.getAttribute("userController")!=null) {
-                orderBean = (OrderController) sess.getAttribute("orderController");
-                userBean = (UsrController) sess.getAttribute("userController");
+           
+            if (!usrController.getMyUsr().getUTitle().isEmpty()) {
+                
                 document = new Document();
                 bos = new ByteArrayOutputStream();
                 PdfWriter.getInstance(document, bos);

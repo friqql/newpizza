@@ -36,15 +36,16 @@ import javax.servlet.http.HttpSession;
  *
  * @author Teilnehmer
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class UsrController implements Serializable {
 
     private Usr myUsr;
    
-   
-    private  NavigationController nc;
-    private MessagesController mv;
+   @Inject
+    private  NavigationController navigationController;
+   @Inject
+    private MessagesController messagesController;
     private List<Usr> allCustomers;
    
 
@@ -77,10 +78,8 @@ public class UsrController implements Serializable {
     
     @PostConstruct
     public void init(){
-        myUsr = new Usr();
-       
-        nc = new NavigationController();
-        mv = new MessagesController();
+        
+       myUsr = new Usr();
        
        
         allCustomers = new ArrayList();
@@ -113,8 +112,8 @@ public class UsrController implements Serializable {
             request.login(myUsr.getUUsrname(), myUsr.getUPassword());
             myUsr = uh().getUsrByUsrname(myUsr.getUUsrname());
            
-        } catch (ServletException ex) {
-            Logger.getLogger(UsrController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            messagesController.nnli();
         }
        
 
@@ -149,11 +148,15 @@ public class UsrController implements Serializable {
     public void logOut() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         try {
+            
+           
             request.logout();
+             
+            
         } catch (ServletException ex) {
             
             Logger.getLogger(UsrController.class.getName()).log(Level.SEVERE, null, ex);
-            nc.toIndex();
+            navigationController.toIndex();
         }
     }
 
@@ -172,7 +175,7 @@ public class UsrController implements Serializable {
 
         myUsr.setUPlace("");
         myUsr.setURole("");
-        nc.toIndex();
+        navigationController.toIndex();
     }
 
     /**
@@ -205,13 +208,15 @@ public class UsrController implements Serializable {
  * Dient zur Registrierung, wenn der Usrname nicht vergeben ist
  */
     public void register() {
+        myUsr= new Usr();
+        myUsr.setUUsrname(myUsr.getUUsrname());
 if(uh().getUsrByUsrname(myUsr.getUUsrname())==null){
         uh().register(myUsr);
-        mv.reg_s();
+        messagesController.reg_s();
 }
 
 else{
-    mv.reg_e();
+    messagesController.reg_e();
 }
 
     }
@@ -230,7 +235,7 @@ else{
     public void setNewPass() {
        
         
-        if (myUsr.getOldPass().equals(myUsr.getUPassword())) {
+        if (ch().hash(myUsr.getOldPass()).equals(myUsr.getUPassword())) {
             
             
             

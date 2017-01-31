@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <body>
+        
+        <ui:composition>
+          
+    <p:accordionPanel rendered="#{not usrController.logedIn}" >
+                    <!-- ***************************************EINLOGGEN***************************************-->
+                    <p:tab title="#{msg.lin}" titleStyle="background-color:red" >
+
+                        <h:form style="font-size:14px;">
+
+
+                            <h:panelGrid columns="3" style="font-size:14px;">
+                                <h:outputLabel for="inUsrname" value="#{msg.ben}" />
+                                <h:inputText id="inUsrname" value="#{usrController.myUsr.UUsrname}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.bnnl()}'/>
+                                <p:message for="inUsrname"/>
+                                <h:outputLabel for="inPassword" value="#{msg.pw}" />
+
+                                <h:inputSecret id="inPassword" value="#{usrController.myUsr.UPassword}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.pwnl()}'/>
+                                <p:message for="inPassword"/>
+
+                                <h:commandButton action="#{usrController.login()}" value="#{msg.lin}" style="background-color:red;color:white;font-size:14px;"/>
+                            </h:panelGrid>
+
+
+                        </h:form>
+
+
+
+
+                    </p:tab>
+                    <!-- ***************************************REGISTRIEREN***************************************-->
+                    <p:tab title="#{msg.reg}" titleStyle="background-color:red">
+                        <h:form style="font-size:14px;">
+
+                            <h:panelGrid columns="6" style="font-size:14px;">
+
+
+                                <h:outputLabel for="inUsrname" value="#{msg.ben}" />
+                                <h:inputText id="inUsrname" value="#{usrController.myUsr.UUsrname}" required="true" requiredMessage='#{messagesController.reg_e()} #{messagesController.bnnl()}'/>
+                                <h:outputLabel for="inPassword" value="#{msg.pw}" />
+                                <h:inputSecret id="inPassword" value="#{usrController.myUsr.UPassword}" required="true"   requiredMessage='#{messagesController.pwnl()}'/>
+
+
+                                <h:outputLabel for="inTitle" value="#{msg.sex}" />
+                                <h:selectOneMenu id="inTitle" value="#{usrController.myUsr.UTitle}">
+                                    <f:selectItem itemValue="#{msg.hrn}" itemLabel="#{msg.man}" />
+                                    <f:selectItem itemValue="#{msg.fra}" itemLabel="#{msg.fem}" />	   							
+                                </h:selectOneMenu>	
+
+                                <h:outputLabel for="inFirstname" value="#{msg.vn}" />
+                                <h:inputText id="inFirstname" value="#{usrController.myUsr.UFirstname}" required="true" requiredMessage='#{messagesController.fnnl()}' />
+                                <h:outputLabel for="inLastname" value="#{msg.nn}" />
+                                <h:inputText  id="inLastname" value="#{usrController.myUsr.ULastname}" required="true" requiredMessage='#{messagesController.lnnl()}'/>
+                                <h:outputLabel for="inStreet" value="#{msg.str}" />
+                                <h:inputText id="inStreet" value="#{usrController.myUsr.UStreet}" required="true" requiredMessage='#{messagesController.stnl()}'/>
+                                <h:outputLabel for="inHouse" value="#{msg.hn}" />
+                                <h:inputText  id="inHouse" value="#{usrController.myUsr.UHouse}" required="true" requiredMessage='#{messagesController.hnnl()}' />
+                                <h:outputLabel for="inPlz" value="#{msg.plz}" />
+                                <h:inputText id="inPlz" value="#{usrController.myUsr.UPlz}" required="true" requiredMessage='#{messagesController.plznl()}' />
+                                <h:outputLabel for="inPlace" value="#{msg.ort}" />
+                                <h:inputText  id="inPlace" value="#{usrController.myUsr.UPlace}" required="true" requiredMessage='#{messagesController.ornl()}'/>
+
+
+                              
+                                <h:commandButton action="#{usrController.register()}" value="#{msg.reg}" style="background-color:red;color:white;"/>
+                            </h:panelGrid>
+                        </h:form>
+                          <h:form><h:commandButton action="#{usrController.reset()}" value="#{msg.res}" style="background-color:red;color:white;font-size:14px;"/></h:form>
+                    </p:tab>
+
+                </p:accordionPanel>
+
+                <!-- ***************************************BESTELLUNG***************************************-->
+
+                <h:form>
+
+                    <h:dataTable id="food" value="#{foodController.foodlist}" var="food" style="font-size:14px;">
+                        <f:facet name="header">#{msg.usk}</f:facet>
+                        <h:column>
+                            <f:facet name ="header">#{msg.num}</f:facet>
+
+
+                            <h:outputText value="#{food.FId}" />
+
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">#{msg.nam}</f:facet>
+
+                            <h:outputText value="#{food.FName}"/>
+
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg.prs}</f:facet>
+
+                            <h:outputText value="#{food.FPrice}">
+                                <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                            </h:outputText>
+
+                        </h:column>
+
+
+                        <h:column rendered="#{usrController.logedIn}">
+                            <f:facet name="header" >#{msg.men} </f:facet>
+
+                            <h:inputText value="#{food.FAmmount}"/>
+
+                        </h:column>
+
+                    </h:dataTable>
+
+                    <h:commandButton action="#{orderController.addToOrder(foodController.foodlist)}" value="#{msg.plus}" rendered="#{usrController.logedIn}" style="background-color:red;color:white;"/>
+
+
+
+                    <h:commandButton action="#{foodController.reset(foodController.foodlist)}" value="#{msg.res}" rendered="#{usrController.logedIn}" style="background-color:red;color:white;">
+                        <f:actionListener binding="#{orderController.reset()}" />
+                    </h:commandButton>
+
+                </h:form>
+
+         
+        </ui:composition>
+        
+    </body>
+</html>
