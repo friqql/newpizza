@@ -6,7 +6,7 @@
 package de.friqql.jb;
 
 
-import de.friqql.model.Food;
+import de.friqql.model.Bestellung;
 import javax.ejb.Remote;
 
 /**
@@ -14,7 +14,8 @@ import javax.ejb.Remote;
  * @author Teilnehmer
  */
 @Remote
-public interface FoodHelperRemote {
-    public int countFood();
-public Food getFoodById(int fId);
+public interface BestellungHelperRemote {
+    public double sumBestellungedToday();
+public int numBestellungedToday();
+public void storeBestellung(Bestellung saveBestellung);
 }
