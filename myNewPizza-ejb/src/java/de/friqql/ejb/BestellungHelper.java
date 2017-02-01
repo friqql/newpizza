@@ -8,8 +8,7 @@ package de.friqql.ejb;
 
 
 
-import de.friqql.jb.OrderHelperRemote;
-import de.friqql.model.POrder;
+import de.friqql.model.Bestellung;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,21 +19,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import de.friqql.jb.BestellungHelperRemote;
 
 /**
  *
  * @author Teilnehmer
  */
-@Stateful(mappedName="ejb/orderHelper")
+@Stateful(mappedName="ejb/bestellungHelper")
 @SessionScoped
-public class OrderHelper implements OrderHelperRemote {
+public class BestellungHelper implements BestellungHelperRemote {
     @PersistenceContext(unitName = "myNewPizza-ejb", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
 double sum;
 int num;
-private List<POrder> od;
+private List<Bestellung> od;
 
-    public OrderHelper() {
+    public BestellungHelper() {
         od = new ArrayList();
     }
     
@@ -42,28 +42,30 @@ private List<POrder> od;
 
 
 
-    public double sumOrderedToday(){
-        Query query = entityManager.createQuery("SELECT p FROM POrder p WHERE p.oSince = CURRENT_DATE");
+    @Override
+    public double sumBestellungedToday(){
+        Query query = entityManager.createQuery("SELECT b FROM Bestellung b WHERE b.since = CURRENT_DATE");
         od = (List)query.getResultList();
        sum= 0.00;
-            for(POrder o:od){
+            for(Bestellung b:od){
                 
-                sum= sum+(o.getOAmmount()*o.getOPrice());
+                sum= sum+(b.getAmmount()*b.getPrice());
             }
         
        
        
        
-       // POrder.count
+       // Bestellung.count
        
         return sum;
     }
     
-public int numOrderedToday(){
+    @Override
+    public int numBestellungedToday(){
     num = 0;
-    Query query = entityManager.createQuery("SELECT p FROM POrder p WHERE p.oSince = CURRENT_DATE");
+    Query query = entityManager.createQuery("SELECT b FROM Bestellung b WHERE b.since = CURRENT_DATE");
     od = (List)query.getResultList();
-    for(POrder o:od)
+    for(Bestellung b:od)
     {
         
             num++;
@@ -72,8 +74,9 @@ public int numOrderedToday(){
     
     return num;
 }
-public void storeOrder(POrder saveOrder){
-    entityManager.merge(saveOrder);
+    @Override
+    public void storeBestellung(Bestellung saveBestellung){
+    entityManager.merge(saveBestellung);
     entityManager.flush();
 }
 }

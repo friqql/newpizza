@@ -10,8 +10,8 @@ package de.friqql.ejb;
 
 
 
-import de.friqql.jb.FoodHelperRemote;
-import de.friqql.model.Food;
+import de.friqql.jb.SpeiseHelperRemote;
+import de.friqql.model.Speise;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,47 +29,47 @@ import javax.persistence.Query;
  *
  * @author Teilnehmer
  */
-@Stateful (mappedName="ejb/foodHelper")
+@Stateful (mappedName="ejb/speiseHelper")
 @SessionScoped
-public class FoodHelper implements FoodHelperRemote{
+public class SpeiseHelper implements SpeiseHelperRemote{
 
     
     
     @PersistenceContext(unitName = "myNewPizza-ejb", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
-    private int foodCount;
-    private Food foundFood;
-private List<Food> foodlist;
+    private int speiseCount;
+    private Speise foundSpeise;
+private List<Speise> speiselist;
 
-    public FoodHelper() {
+    public SpeiseHelper() {
         
-        foodlist=new ArrayList();
+        speiselist=new ArrayList();
     }
 
 
 
     @Override
-    public int countFood() {
-        Query query = entityManager.createQuery("SELECT f FROM Food f");
-        List<Food> lf=(List)query.getResultList();
-        foodCount = lf.size();
+    public int countSpeise() {
+        Query query = entityManager.createQuery("SELECT s FROM Speise s");
+        List<Speise> lf=(List)query.getResultList();
+        speiseCount = lf.size();
 
-        return foodCount;
+        return speiseCount;
     }
 
     @Override
-    public Food getFoodById(int fId) {
-        Query query = entityManager.createQuery("SELECT f FROM Food f");
+    public Speise getSpeiseById(int fId) {
+        Query query = entityManager.createQuery("SELECT s FROM Speise s");
         
-        foodlist = (List)query.getResultList();
+        speiselist = (List)query.getResultList();
         
-        for(Food f:foodlist){
-            if(f.getFId().equals((Integer)fId)){
-                foundFood = f;
+        for(Speise s:speiselist){
+            if(s.getId().equals((Integer)fId)){
+                foundSpeise = s;
             }
         }
         
-        return foundFood;
+        return foundSpeise;
 
     }
 }
