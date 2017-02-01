@@ -8,18 +8,18 @@
 
         <ui:composition>
          
+
+
  <h:form style="font-size:14px;">
 
 
                     <h:commandButton action='#{localeController.switchLang("de")}' value="#{msg.lde}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" /><br/>
                     <h:commandButton action='#{localeController.switchLang("en")}' value="#{msg.len}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" /><br/>
-                    <ui:fragment rendered="#{request.isUserInRole('Admin')}"><br /></ui:fragment>
-                    <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin")}'/><br/>
+              
+                  
                     <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered='#{benutzerController.logedIn}'/><br/>
-                    <h:commandButton action="#{benutzerController.logOut()}" value="#{msg.loo}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered="#{benutzerController.logedIn}"/>
+                    <h:commandButton action="#{navigationController.toIndex()}" value="#{msg.zrk}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;"/>
                 </h:form>  
-        
         </ui:composition>
-
     </body>
 </html>

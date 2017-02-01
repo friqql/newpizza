@@ -9,8 +9,7 @@ package de.friqql.controller;
 
 
 
-import de.friqql.jb.UsrHelperRemote;
-import de.friqql.model.Usr;
+import de.friqql.model.Benutzer;
 import de.friqql.listener.ActiveSessionsListener;
 
 
@@ -36,6 +35,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import de.friqql.jb.BenutzerHelperRemote;
 
 /**
  *
@@ -49,7 +49,7 @@ public class AdminController implements Serializable {
     private Map sessionMap;
     private List<Map> sessionMaps;
  
-    private Usr helpUsr;
+    private Benutzer helpBenutzer;
   
     private String vermerk;
 
@@ -62,7 +62,7 @@ public class AdminController implements Serializable {
         this.sessionMap = new HashMap();
         this.sessionMaps = new ArrayList();
       
-        this.helpUsr = new Usr();
+        this.helpBenutzer = new Benutzer();
     
         this.vermerk = "Alles Ok!";
     }
@@ -94,10 +94,10 @@ public class AdminController implements Serializable {
         return sessionMaps;
     }
     
-     private UsrHelperRemote uh() {
+     private BenutzerHelperRemote uh() {
         try {
             Context c = new InitialContext();
-            return (UsrHelperRemote) c.lookup("ejb/userHelper");
+            return (BenutzerHelperRemote) c.lookup("ejb/benutzerHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -150,44 +150,44 @@ public class AdminController implements Serializable {
     }
 
     /**
-     * Ändert das Passwort eines Usrs
-     * @param helpUsr 
+     * Ändert das Passwort eines Benutzers
+     * @param helpBenutzer 
      */
-    public void setNewOtherPass(Usr helpUsr) {
+    public void setNewOtherPass(Benutzer helpBenutzer) {
 
-        helpUsr.setUPassword(helpUsr.getNewPass());
-        uh().changePassword(helpUsr);
+        helpBenutzer.setPassword(helpBenutzer.getNewPass());
+        uh().changePassword(helpBenutzer);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwort geändert", "Hat funktioniert!"));
     }
 
 
     /**
-     * Gibt den Usr zurück, mit dem gearbeitet wird
+     * Gibt den Benutzer zurück, mit dem gearbeitet wird
      * @return 
      */
-    public Usr getHelpUsr() {
-        return helpUsr;
+    public Benutzer getHelpBenutzer() {
+        return helpBenutzer;
     }
 /**
- * Setzt den Usr, mit dem gearbeitet wird
- * @param helpUsr 
+ * Setzt den Benutzer, mit dem gearbeitet wird
+ * @param helpBenutzer 
  */
-    public void setHelpUsr(Usr helpUsr) {
-        this.helpUsr = helpUsr;
+    public void setHelpBenutzer(Benutzer helpBenutzer) {
+        this.helpBenutzer = helpBenutzer;
     }
 
     /**
-     * Gibt den UsrHelper zurück der zum Datenbankzugriff dient
+     * Gibt den BenutzerHelper zurück der zum Datenbankzugriff dient
      * @return 
      */
   
 /**
- * Setzt einen Vermerk über Probleme beim Usr
- * @param helpUsr 
+ * Setzt einen Vermerk über Probleme beim Benutzer
+ * @param helpBenutzer 
  */
-    public void setVermerk(Usr helpUsr) {
-        uh().setVermerk(helpUsr);
-helpUsr.setUVermerk("");
+    public void setVermerk(Benutzer helpBenutzer) {
+        uh().setVermerk(helpBenutzer);
+helpBenutzer.setVermerk("");
     }
 /**
  * Gibt einen Vermerk zurück
@@ -196,7 +196,7 @@ helpUsr.setUVermerk("");
  */
     public String getVermerkById(int id) {
 
-        this.vermerk = uh().getUsrVermerkById(id);
+        this.vermerk = uh().getBenutzerVermerkById(id);
         
         return vermerk;
     }

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +29,15 @@ import javax.servlet.http.HttpSession;
 @Named("navigationController")
 @javax.enterprise.context.SessionScoped
 public class NavigationController implements Serializable {
-
+@Inject
+private LocaleController localeController;
     /**
      * Navigation zum Index
      * @return 
      */
     public String toIndex() {
+        
+            localeController.switchLang(localeController.getLanguage().toString());
         return "toIndex";
     }
 /**
@@ -41,6 +45,7 @@ public class NavigationController implements Serializable {
  * @return 
  */
     public String tmc() {
+         localeController.switchLang(localeController.getLanguage().toString());
         return "tmc";
     }
 /**
@@ -48,17 +53,25 @@ public class NavigationController implements Serializable {
  * @return 
  */
     public String tad() {
+        localeController.switchLang(localeController.getLanguage().toString());
         return "tad";
     }
 /**
  * Navigation zur Dankepage
  */
     public void danke(){
+        localeController.switchLang(localeController.getLanguage().toString());
         danke2();
     }
     
       public String danke2() {
+          localeController.switchLang(localeController.getLanguage().toString());
         return "danke";
+    }
+      
+         public String zsf() {
+          localeController.switchLang(localeController.getLanguage().toString());
+        return "zsf";
     }
     /**
      * Navigation zur Rechnung
@@ -70,7 +83,7 @@ public class NavigationController implements Serializable {
         try {
            response.sendRedirect("/myNewPizza-war/rechnung");
         } catch (IOException ex) {
-            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BestellungController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

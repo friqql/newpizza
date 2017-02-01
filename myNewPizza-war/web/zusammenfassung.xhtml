@@ -14,30 +14,30 @@
         <f:view>
             
           
-              <h:outputText value="#{usrController.myUsr.UFirstname} " /> 
-              <h:outputText value="#{usrController.myUsr.ULastname}" /> 
+              <h:outputText value="#{benutzerController.myBenutzer.firstname} " /> 
+              <h:outputText value="#{benutzerController.myBenutzer.lastname}" /> 
               <br/>
-              <h:outputText value="#{usrController.myUsr.UStreet} " /> 
-              <h:outputText value="#{usrController.myUsr.UHouse}" /> 
+              <h:outputText value="#{benutzerController.myBenutzer.street} " /> 
+              <h:outputText value="#{benutzerController.myBenutzer.house}" /> 
             <br/>
-              <h:outputText value="#{usrController.myUsr.UPlz} " /> 
-              <h:outputText value="#{usrController.myUsr.UPlace}" /> 
+              <h:outputText value="#{benutzerController.myBenutzer.plz} " /> 
+              <h:outputText value="#{benutzerController.myBenutzer.place}" /> 
               <hr/>
             <h:panelGrid columns="7">
                 
              
                 
-          <c:forEach var="od" begin="0" end="#{orderController.orderL.size()-1}" step="1">
+          <c:forEach var="od" begin="0" end="#{bestellungController.orderL.size()-1}" step="1">
               <h:outputText value="#{msg.pos} #{od+1}:" style="font-weight: 700"/>
               
-              <h:outputText value="#{orderController.orderL.get(od).OName} "/>
-              <h:outputText value="Anzahl: #{orderController.orderL.get(od).OAmmount} "/>
+              <h:outputText value="#{bestellungController.orderL.get(od).name} "/>
+              <h:outputText value="Anzahl: #{bestellungController.orderL.get(od).ammount} "/>
               <h:outputText value="#{msg.ezp} "/>
-              <h:outputText value="#{orderController.orderL.get(od).OPrice}">
+              <h:outputText value="#{bestellungController.orderL.get(od).price}">
                    <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
               </h:outputText>
                <h:outputText value="#{msg.zsm} "/>
-              <h:outputText value="#{orderController.orderL.get(od).OZwischensumme}">
+              <h:outputText value="#{bestellungController.orderL.get(od).zwischensumme}">
                    <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
               </h:outputText>
            
@@ -50,15 +50,15 @@
               
         </f:view>    
     <h:form>  
-              <h:outputText value="#{msg.sum}"/><h:outputText value="#{orderController.sum}">
+              <h:outputText value="#{msg.sum}"/><h:outputText value="#{bestellungController.sum}">
                 <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
               </h:outputText>
                   <br/>
-               <h:commandButton action="#{usrController.toIndex()}" value="#{msg.bae}" style="background-color:red;color:white;" >
-                   <f:actionListener binding="#{foodController.reset(foodController.foodlist)}" />
-                   <f:actionListener binding="#{orderController.reset()}" />
+               <h:commandButton action="#{benutzerController.toIndex()}" value="#{msg.bae}" style="background-color:red;color:white;" >
+                   <f:actionListener binding="#{speiseController.reset(speiseController.speiselist)}" />
+                   <f:actionListener binding="#{bestellungController.reset()}" />
                </h:commandButton>
-                 <h:commandButton action="#{orderController.save()}" value="#{msg.sb}" style="background-color:red;color:white;" >
+                 <h:commandButton action="#{bestellungController.save()}" value="#{msg.sb}" style="background-color:red;color:white;" >
                    
                  </h:commandButton>
                   

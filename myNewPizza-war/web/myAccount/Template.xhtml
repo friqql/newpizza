@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>Facelets Template</title>
+          <f:loadBundle var='msg' basename='messages'/>
+        <f:loadBundle var='war' basename='warnung'/>
+    </h:head>
+
+    <h:body style="background-color:PaleGoldenRod;">
+      
+}
+
+        <div id="page" >
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north" style="border-radius: 1px;padding:0px;">
+                    <div id="header" style="color:burlywood;padding-top:7px;padding-bottom:7px; background-color:seagreen;text-align:center">
+                        <ui:insert name="header">
+                            <ui:include src="header.xhtml" />
+                        </ui:insert>
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west"  style="background-color:PaleGoldenRod;border:0px;">
+                    <div id="content" style=" background-color:PaleGoldenRod; height:100%">
+                        <ui:insert name="west" >
+                            <ui:include src="west.xhtml" />
+                        </ui:insert>
+                    </div>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center"  style="background-color:PaleGoldenRod;border-radius: 1px;">
+                    <div id="content2" style=" background-color:PaleGoldenRod;height:100%">
+                        <ui:insert name="content">
+                            <ui:include src="center.xhtml"/>
+                        </ui:insert>
+                    </div>
+                </p:layoutUnit>
+
+
+
+            </p:layout>
+        </div>
+
+    </h:body>
+
+</html>

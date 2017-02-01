@@ -25,7 +25,7 @@ public class LocaleController implements Serializable {
      * Der Konstruktor für den Language Controller
      */
     public LocaleController() {
-        this.language = new Locale("de");
+        this.language = new Locale("en");
     }
 
     

@@ -27,6 +27,12 @@
             <from-outcome>danke</from-outcome>
             <to-view-id>/danke.xhtml</to-view-id>
              <redirect/>
+              <from-view-id>*</from-view-id>
+       <navigation-case>
+            <from-outcome>zfs</from-outcome>
+            <to-view-id>/zusammenfassung.xhtml</to-view-id>
+             <redirect/>
+        </navigation-case>
         </navigation-case>
     </navigation-rule>
     

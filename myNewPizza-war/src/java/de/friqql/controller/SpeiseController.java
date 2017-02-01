@@ -9,8 +9,7 @@ package de.friqql.controller;
 
 
 
-import de.friqql.jb.FoodHelperRemote;
-import de.friqql.model.Food;
+import de.friqql.model.Speise;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,26 +22,27 @@ import javax.inject.Named;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import de.friqql.jb.SpeiseHelperRemote;
 
 /**
  *
  * @author Teilnehmer
  */
-@Named("foodController")
+@Named("speiseController")
 @javax.enterprise.context.SessionScoped
-public class FoodController implements Serializable {
+public class SpeiseController implements Serializable {
 
-    private Food food;
+    private Speise speise;
     
     private int fId;
-    private ArrayList<Food> foodlist;
+    private ArrayList<Speise> speiselist;
    
 
     
-     private FoodHelperRemote helper() {
+     private SpeiseHelperRemote helper() {
         try {
             Context c = new InitialContext();
-             FoodHelperRemote sepp = (FoodHelperRemote)c.lookup("ejb/foodHelper");
+             SpeiseHelperRemote sepp = (SpeiseHelperRemote)c.lookup("ejb/speiseHelper");
             return (sepp);
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
@@ -53,19 +53,19 @@ public class FoodController implements Serializable {
     
     
     /**
-     * Der Konstruktor des FoodControllers
+     * Der Konstruktor des SpeiseControllers
      */
-    public FoodController() {
+    public SpeiseController() {
      
     }
     @PostConstruct
     public void init(){
-        food = new Food();
+        speise = new Speise();
         
-        foodlist = new ArrayList();
+        speiselist = new ArrayList();
         
-        for (int i = 1; i <= countFood(); i++) {
-            foodlist.add((Food) getFoodById(i));
+        for (int i = 1; i <= countSpeise(); i++) {
+            speiselist.add((Speise) getSpeiseById(i));
 
         }
     }
@@ -73,15 +73,15 @@ public class FoodController implements Serializable {
  * Gibt eine Speise zurück
  * @return 
  */
-    public Food getFood() {
-        return food;
+    public Speise getSpeise() {
+        return speise;
     }
 /**
  * Setzt eine Speise
- * @param food 
+ * @param speise 
  */
-    public void setFood(Food food) {
-        this.food = food;
+    public void setSpeise(Speise speise) {
+        this.speise = speise;
     }
    
    
@@ -103,16 +103,16 @@ public class FoodController implements Serializable {
  * Die Liste der Speisen wird zurückgegeben
  * @return 
  */
-    public ArrayList<Food> getFoodlist() {
+    public ArrayList<Speise> getSpeiselist() {
 
-        return foodlist;
+        return speiselist;
     }
 /**
  * Die Liste der Speisen wird gesetzt
- * @param foodlist 
+ * @param speiselist 
  */
-    public void setFoodlist(ArrayList foodlist) {
-        this.foodlist = foodlist;
+    public void setSpeiselist(ArrayList speiselist) {
+        this.speiselist = speiselist;
     }
 
    
@@ -121,26 +121,26 @@ public class FoodController implements Serializable {
  * @param fId
  * @return 
  */
-    public Food getFoodById(Integer fId) {
-        food = helper().getFoodById(fId);
-        return food;
+    public Speise getSpeiseById(Integer fId) {
+        speise = helper().getSpeiseById(fId);
+        return speise;
     }
 /**
  * Zählt wieviele Speisen es gibt
  * @return 
  */
-    public int countFood() {
+    public int countSpeise() {
 
-        return helper().countFood();
+        return helper().countSpeise();
     }
 /**
  * Setzt die Speiseliste zurück
  * @param dieListe 
  */
-    public void reset(ArrayList<Food> dieListe) {
-        for (Food f : dieListe) {
+    public void reset(ArrayList<Speise> dieListe) {
+        for (Speise s : dieListe) {
 
-            f.setFAmmount(0);
+            s.setAmmount(0);
         }
 
     }

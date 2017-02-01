@@ -12,9 +12,9 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import de.friqql.model.POrder;
-import de.friqql.controller.OrderController;
-import de.friqql.controller.UsrController;
+import de.friqql.model.Bestellung;
+import de.friqql.controller.BestellungController;
+import de.friqql.controller.BenutzerController;
 
 
 import java.io.ByteArrayOutputStream;
@@ -47,8 +47,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "myPdf", urlPatterns = "/rechnung")
 public class Rechnung extends HttpServlet implements Serializable{
-@Inject OrderController orderController;
-@Inject UsrController usrController;
+@Inject BestellungController bestellungController;
+@Inject BenutzerController usrController;
     /**
      * Erstellt eine PDF
      *
@@ -75,8 +75,8 @@ public class Rechnung extends HttpServlet implements Serializable{
         PdfPTable tableSumme;
 
         // Bean
-        OrderController orderBean = orderController;
-        UsrController userBean = usrController;
+        BestellungController bestellungBean = bestellungController;
+        BenutzerController userBean = usrController;
         // Formatierung
         Font boldFont = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
         Font semiBoldFont = new Font(Font.FontFamily.HELVETICA, 10, Font.BOLD);
@@ -93,7 +93,7 @@ public class Rechnung extends HttpServlet implements Serializable{
             resp.setContentType("application/pdf");
 
            
-            if (!usrController.getMyUsr().getUTitle().isEmpty()) {
+            if (!usrController.getMyBenutzer().getTitle().isEmpty()) {
                 
                 document = new Document();
                 bos = new ByteArrayOutputStream();
@@ -101,9 +101,9 @@ public class Rechnung extends HttpServlet implements Serializable{
 
                 document.open();
                 // Adresse
-                document.add(new Paragraph(userBean.getMyUsr().getUTitle() + " " + userBean.getMyUsr().getUFirstname() + " " + userBean.getMyUsr().getULastname()));
-                document.add(new Paragraph(userBean.getMyUsr().getUStreet() + " " + userBean.getMyUsr().getUHouse()));
-                document.add(new Paragraph(userBean.getMyUsr().getUPlz() + " " + userBean.getMyUsr().getUPlace()));
+                document.add(new Paragraph(userBean.getMyBenutzer().getTitle() + " " + userBean.getMyBenutzer().getFirstname() + " " + userBean.getMyBenutzer().getLastname()));
+                document.add(new Paragraph(userBean.getMyBenutzer().getStreet() + " " + userBean.getMyBenutzer().getHouse()));
+                document.add(new Paragraph(userBean.getMyBenutzer().getPlz() + " " + userBean.getMyBenutzer().getPlace()));
 
                 // Überschrift
                 document.add(new Paragraph("Rechnung", boldFont));
@@ -121,24 +121,24 @@ public class Rechnung extends HttpServlet implements Serializable{
 
                 // Füllen der Tabellen
                 
-                List<POrder> ol =  orderBean.getOrderL();
-                for (POrder tmp :  ol) {
+                List<Bestellung> bl =  bestellungBean.getOrderL();
+                for (Bestellung b :  bl) {
 
-                    if (tmp != null) {
-                        double mul = tmp.getOAmmount() * tmp.getOPrice();
+                    if (b != null) {
+                        double mul = b.getAmmount() * b.getPrice();
 
                         tableFood.addCell(new PdfPCell(new Phrase("Speise", smallFont)));
-                        tableFood.addCell(new PdfPCell(new Phrase(tmp.getOName(), smallFont)));
+                        tableFood.addCell(new PdfPCell(new Phrase(b.getName(), smallFont)));
                         tableFood.addCell(new PdfPCell(new Phrase("Anzahl", smallFont)));
-                        tableFood.addCell(new PdfPCell(new Phrase(String.valueOf(tmp.getOAmmount()), smallFont)));
+                        tableFood.addCell(new PdfPCell(new Phrase(String.valueOf(b.getAmmount()), smallFont)));
                         tableFood.addCell(new PdfPCell(new Phrase("Einzelpreis", smallFont)));
-                        tableFood.addCell(tmp.getOPrice() + "0€ ");
+                        tableFood.addCell(b.getPrice() + "0€ ");
                         tableFood.addCell(new PdfPCell(new Phrase("Zusammen", smallFont)));
                         tableFood.addCell(mul + "0€ ");
                     }
                 }
                 tableSumme.addCell("Gesammtsumme: ");
-                tableSumme.addCell(new Phrase(String.valueOf(f.format(orderBean.getSum())), smallFont));
+                tableSumme.addCell(new Phrase(String.valueOf(f.format(bestellungBean.getSum())), smallFont));
                
                 // Hinzufügen der Tabellen zum Dokument
                 document.add(new Paragraph("\n"));

@@ -12,96 +12,9 @@
         <f:loadBundle var='war' basename='warnung'/>
     </h:head>
     <h:body>
-       <p:layout fullPage="true">
-                      <!-- *************************************************NORTH********************************************-->
-          <p:layoutUnit position="north" size="100"  collapsible="true">
-                     <h:outputText value="#{msg.myac}" style="font-size:30px"/>
-           </p:layoutUnit>
-           
-             
-           <!-- *************************************************WEST*********************************************-->
-            
-<p:layoutUnit position="west"   collapsible="false">
-     <h:form style="font-size:14px;">
-
-                 
-                    <h:commandButton action='#{localeController.switchLang("de")}' value="#{msg.lde}" style="background-color:red;color:white;font-size:14px; width:100%;" /><br/>
-                    <h:commandButton action='#{localeController.switchLang("en")}' value="#{msg.len}" style="background-color:red;color:white;font-size:14px; width:100%;" /><br/>
-                    <ui:fragment rendered="#{request.isUserInRole('Admin')}"><br /></ui:fragment>
-                       <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin")}'/><br/>
-                    <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:red;color:white;font-size:14px; width:100%;" rendered='#{usrController.logedIn}'/><br/>
-                    <h:commandButton action="#{navigationController.toIndex()}" value="#{msg.zrk}" style="background-color:red;color:white;font-size:14px; width:100%;"/>
-                </h:form>  
-</p:layoutUnit>
-           
-         <!-- *************************************************CENTER*********************************************-->
-     <p:layoutUnit position="center"   collapsible="false">
-                
-                    <p:accordionPanel>
-                    
-        <p:tab title="#{msg.pae}" titleStyle="background-color:red">
-           
-                  <h:form>   
-                      <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                     
-                      <h:outputText value="#{msg.apw}"/>
-                              <h:inputText id="inOldPw" value="#{usrController.myUsr.oldPass}" required="true" /> 
-                      <h:outputText value="#{msg.npw}"/>        
-             <h:inputText id="inNewPw" value="#{usrController.myUsr.newPass}" required="true" /> 
-       <h:commandButton action="#{usrController.setNewPass()}" value="#{msg.pae}" style="background-color:red;color:white;" />
-                </h:form>
-      
-            
-        </p:tab>
-                        
-        <p:tab title="#{msg.aae}" titleStyle="background-color:red">
-           
-                  <h:form>   
-                      <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                     
-                       <h:form style="font-size:14px;">
-                           
-                            <h:panelGrid columns="6" style="font-size:14px;">
-
-                                 
-                             
-                                
-                                
-                               
-                                	
-
-                                <h:outputLabel for="inFirstname" value="#{msg.vn}" />
-                                <h:inputText id="inFirstname" value="#{usrController.myUsr.UFirstname}" required="true" />
-                                <h:outputLabel for="inLastname" value="#{msg.nn}" />
-                                <h:inputText  id="inLastname" value="#{usrController.myUsr.ULastname}" required="true" />
-                                <h:outputLabel for="inStreet" value="#{msg.str}" />
-                                <h:inputText id="inStreet" value="#{usrController.myUsr.UStreet}" required="true" />
-                                <h:outputLabel for="inHouse" value="#{msg.hn}" />
-                                <h:inputText  id="inHouse" value="#{usrController.myUsr.UHouse}" required="true" />
-                                <h:outputLabel for="inPlz" value="#{msg.plz}" />
-                                <h:inputText id="inPlz" value="#{usrController.myUsr.UPlz}" required="true" />
-                                <h:outputLabel for="inPlace" value="#{msg.ort}" />
-                                <h:inputText  id="inPlace" value="#{usrController.myUsr.UPlace}" required="true" />
-
-
-                                      <h:commandButton action="#{usrController.updateUsr()}" value="#{msg.aae}" style="background-color:red;color:white;" />
-                            </h:panelGrid>
-                        </h:form>
-
-                </h:form>
-      
-            
-        </p:tab>                 
-                        
-                        
-        
-    </p:accordionPanel>
-                
-
-                </p:layoutUnit>
-        
-      
-       </p:layout>
+        <ui:insert>
+            <ui:include src="/myAccount/Template.xhtml"/>
+        </ui:insert>
 
     </h:body>
 </html>

@@ -10,9 +10,9 @@
         <ui:composition>
 
      
-                <h:outputText value="#{msg.servus}" style="font-size:25px" rendered="#{not usrController.logedIn}"/>
-                <h:outputText value="#{msg.mes}"  rendered="#{not usrController.logedIn}"/>
-                <h:outputText value="#{msg.servus}, #{usrController.myUsr.UUsrname}" style="font-size:30px" rendered="#{usrController.logedIn}"/>
+                <h:outputText value="#{msg.servus}" style="font-size:25px" rendered="#{not benutzerController.logedIn}"/><br/>
+                <h:outputText value="#{msg.mes}"  rendered="#{not benutzerController.logedIn}"/>
+                <h:outputText value="#{msg.servus}, #{benutzerController.myBenutzer.benutzername}" style="font-size:30px" rendered="#{benutzerController.logedIn}"/>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
 

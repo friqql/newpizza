@@ -12,14 +12,14 @@
         <f:loadBundle var='war' basename='warnung'/>
 
         <f:metadata>
-            <f:viewAction action="#{foodController.reset(foodController.foodlist)}" />
-            <f:viewAction action="#{orderController.reset()}" />
+            <f:viewAction action="#{speiseController.reset(speiseController.speiselist)}" />
+            <f:viewAction action="#{bestellungController.reset()}" />
         </f:metadata>
     </h:head>
     <h:body>
 
    <ui:insert>
-            <ui:include src="/index/indexTemplate.xhtml"/>
+            <ui:include src="/index/Template.xhtml"/>
         </ui:insert>
            
       

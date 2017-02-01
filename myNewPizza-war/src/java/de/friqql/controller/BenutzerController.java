@@ -8,8 +8,7 @@ package de.friqql.controller;
 
 
 import de.friqql.jb.ConversionHelperRemote;
-import de.friqql.jb.UsrHelperRemote;
-import de.friqql.model.Usr;
+import de.friqql.model.Benutzer;
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -30,29 +29,30 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import de.friqql.jb.BenutzerHelperRemote;
 
 
 /**
  *
  * @author Teilnehmer
  */
-@Named
+@Named("benutzerController")
 @javax.enterprise.context.SessionScoped
-public class UsrController implements Serializable {
+public class BenutzerController implements Serializable {
 
-    private Usr myUsr;
+    private Benutzer myBenutzer;
    
    @Inject
     private  NavigationController navigationController;
    @Inject
     private MessagesController messagesController;
-    private List<Usr> allCustomers;
+    private List<Benutzer> benutzerlist;
    
 
- private UsrHelperRemote uh() {
+ private BenutzerHelperRemote uh() {
         try {
             Context c = new InitialContext();
-            return (UsrHelperRemote) c.lookup("ejb/userHelper");
+            return (BenutzerHelperRemote) c.lookup("ejb/benutzerHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
@@ -70,7 +70,7 @@ public class UsrController implements Serializable {
         }
     }
     
-    public UsrController() {
+    public BenutzerController() {
         
        
         
@@ -79,29 +79,29 @@ public class UsrController implements Serializable {
     @PostConstruct
     public void init(){
         
-       myUsr = new Usr();
+       myBenutzer = new Benutzer();
        
        
-        allCustomers = new ArrayList();
-        allCustomers = allCustomers();
+        benutzerlist = new ArrayList();
+        benutzerlist = benutzerlist();
     }
 
     
    
     /**
-     * Gibt den aktuellen Usr zurück
+     * Gibt den aktuellen Benutzer zurück
      * @return 
      */
-    public Usr getMyUsr() {
+    public Benutzer getMyBenutzer() {
 
-        return myUsr;
+        return myBenutzer;
     }
 /**
- * Setzt den aktuellen Usr
- * @param myUsr 
+ * Setzt den aktuellen Benutzer
+ * @param myBenutzer 
  */
-    public void setMyUsr(Usr myUsr) {
-        this.myUsr = myUsr;
+    public void setMyBenutzer(Benutzer myBenutzer) {
+        this.myBenutzer = myBenutzer;
     }
 /**
  * Dient zum Login
@@ -109,8 +109,8 @@ public class UsrController implements Serializable {
     public void login() {
         try {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            request.login(myUsr.getUUsrname(), myUsr.getUPassword());
-            myUsr = uh().getUsrByUsrname(myUsr.getUUsrname());
+            request.login(myBenutzer.getBenutzername(), myBenutzer.getPassword());
+            myBenutzer = uh().getBenutzerByBenutzername(myBenutzer.getBenutzername());
            
         } catch (Exception ex) {
             messagesController.nnli();
@@ -119,7 +119,7 @@ public class UsrController implements Serializable {
 
     }
 /**
- * Testet, ob ein Usr eingeloggt ist
+ * Testet, ob ein Benutzer eingeloggt ist
  * @return 
  */
     public boolean isLogedIn() {
@@ -131,7 +131,7 @@ public class UsrController implements Serializable {
 
     }
 /**
- * Testet ob ein Usr ein Kunde ist
+ * Testet ob ein Benutzer ein Kunde ist
  * @return 
  */
     public boolean isCustomer() {
@@ -151,46 +151,36 @@ public class UsrController implements Serializable {
             
            
             request.logout();
-             
+             myBenutzer= new Benutzer();
             
         } catch (ServletException ex) {
             
-            Logger.getLogger(UsrController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BenutzerController.class.getName()).log(Level.SEVERE, null, ex);
             navigationController.toIndex();
         }
     }
 
     /**
-     * Setzt bei der Registrierung den Usr zurück
+     * Setzt bei der Registrierung den Benutzer zurück
      */
     public void reset() {
-        myUsr.setUUsrname("");
-        myUsr.setUPassword("");
-        myUsr.setUTitle("");
-        myUsr.setUFirstname("");
-        myUsr.setULastname("");
-        myUsr.setUStreet("");
-        myUsr.setUHouse("");
-        myUsr.setUPlz("");
-
-        myUsr.setUPlace("");
-        myUsr.setURole("");
+        myBenutzer = new Benutzer();
         navigationController.toIndex();
     }
 
     /**
-     * Liste aller Usr (auch Admins, Name aus historischen Gründen)
+     * Liste aller Benutzer (auch Admins, Name aus historischen Gründen)
      * @return 
      */
-    public List<Usr> getAllCustomers() {
-        return allCustomers;
+    public List<Benutzer> getBenutzerlist() {
+        return benutzerlist;
     }
 /**
- * Setzt die Liste aller Usr
- * @param allCustomers 
+ * Setzt die Liste aller Benutzer
+ * @param benutzerlist 
  */
-    public void setAllCustomers(List<Usr> allCustomers) {
-        this.allCustomers = allCustomers;
+    public void setBenutzerlist(List<Benutzer> benutzerlist) {
+        this.benutzerlist = benutzerlist;
     }
 
     
@@ -205,13 +195,13 @@ public class UsrController implements Serializable {
         return "toIndex";
     }
 /**
- * Dient zur Registrierung, wenn der Usrname nicht vergeben ist
+ * Dient zur Registrierung, wenn der Benutzername nicht vergeben ist
  */
     public void register() {
-        myUsr= new Usr();
-        myUsr.setUUsrname(myUsr.getUUsrname());
-if(uh().getUsrByUsrname(myUsr.getUUsrname())==null){
-        uh().register(myUsr);
+        
+       
+if(uh().getBenutzerByBenutzername(myBenutzer.getBenutzername())==null){
+        uh().register(myBenutzer);
         messagesController.reg_s();
 }
 
@@ -221,10 +211,10 @@ else{
 
     }
 /**
- * Updatet die Usrdaten
+ * Updatet die Benutzerdaten
  */
-    public void updateUsr(){
-        uh().updateUsr(myUsr);
+    public void updateBenutzer(){
+        uh().updateBenutzer(myBenutzer);
         
     }
     
@@ -235,24 +225,23 @@ else{
     public void setNewPass() {
        
         
-        if (ch().hash(myUsr.getOldPass()).equals(myUsr.getUPassword())) {
+        if (ch().hash(myBenutzer.getOldPass()).equals(myBenutzer.getPassword())) {
             
             
             
-            uh().changePassword(myUsr);
+            uh().changePassword(myBenutzer);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwort geändert", "Hat funktioniert!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes! Altes PW eingegeben: " +ch().hash(myUsr.getOldPass())+"Tatsächliches altes PW: "+myUsr.getUPassword()+""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes! Altes PW eingegeben: " +ch().hash(myBenutzer.getOldPass())+"Tatsächliches altes PW: "+myBenutzer.getPassword()+""));
         }
     }
     /**
-     * Die Liste aller Usr
+     * Die Liste aller Benutzer
      * @return 
      */
-    public List<Usr> allCustomers(){
-        allCustomers=uh().getAllUsrs();
-        uh().setAllUsrs(new ArrayList());
-        return allCustomers;
+    public List<Benutzer> benutzerlist(){
+        benutzerlist=uh().getBenutzerlist();
+        return benutzerlist;
     
     }
     

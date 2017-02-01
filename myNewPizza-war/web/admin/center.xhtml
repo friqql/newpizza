@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <body>
+        
+        <ui:composition>
+          
+     <p:accordionPanel multiple="true" activeIndex="0,1,2">
+
+                    <p:tab title="SESSIONS" titleStyle="background-color:darkseagreen">
+
+                        <h:outputText value="#{request.getHeader('user-Agent')}"/>
+                        <br/>
+                        <h:outputText value="#{msg.azs} #{adminController.asl.getActiveSessions().size()}"/>
+
+
+
+                        <h:dataTable id="sessions" value="#{adminController.sessionMaps()}" var="sess">
+                            <f:facet name="header">Sessions</f:facet>
+                            <h:column>
+                                <f:facet name ="header">ID:</f:facet>
+
+
+                                <h:outputText value="#{sess.get('id')}" />
+
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">#{msg.crea}</f:facet>
+
+                                <h:outputText value="#{sess.get('creation')}" />
+
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">#{msg.idle}</f:facet>
+
+                                <h:outputText value="#{sess.get('inactive')}" />
+
+
+                            </h:column>
+
+
+
+                        </h:dataTable>
+
+
+
+
+
+
+
+                    </p:tab>
+                    <p:tab title="#{msg.stat}" titleStyle="background-color:darkseagreen">
+
+                        <h:outputText value="#{msg.bh} #{bestellungController.num()} #{msg.bs}"/><br/>
+                        <h:outputText value="#{msg.zsd}"/>
+
+                        <h:outputText value="#{bestellungController.sum()}">
+                            <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                        </h:outputText>
+
+
+
+
+
+
+
+
+                    </p:tab> 
+
+
+
+
+                    <p:tab title="#{msg.verma}" titleStyle="background-color:darkseagreen">
+
+                        <h:form>   
+                            <h:panelGrid columns="3">       
+                                <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV" onchange="submit()" valueChangeListener="#{adminController.getVermerkById(adminController.helpBenutzer.id)}"> 
+
+                                    <f:selectItem itemLabel="#{msg.slo}" itemValue="" />  
+                                    <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/> 
+
+                                </h:selectOneMenu>
+                              
+
+                                <h:inputText id="outSperr" value="#{adminController.getVermerkById(adminController.helpBenutzer.id)}" readonly="true" />
+
+
+                            </h:panelGrid>
+
+                        </h:form>  
+                    </p:tab>
+
+
+                    <p:tab title="#{msg.verme}" titleStyle="background-color:darkseagreen">
+
+                        <h:form>   
+                            <h:panelGrid columns="3">       
+                                <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV"> 
+
+                                    <f:selectItem itemLabel="#{msg.slo}" itemValue="" />  
+                                    <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/> 
+
+                                </h:selectOneMenu>
+
+
+
+
+                                <h:inputText id="inSperr" value="#{adminController.helpBenutzer.vermerk}" />
+                                <h:commandButton action="#{adminController.setVermerk(adminController.helpBenutzer)}" value="Sperrvermerk hinzufügen" style="background-color:darkseagreen;color:white;" />
+
+                            </h:panelGrid>
+
+                        </h:form>  
+                    </p:tab>
+
+
+
+                    <p:tab title="#{msg.passae}" titleStyle="background-color:darkseagreen">
+
+                        <h:form>   
+
+
+                            <h:panelGrid columns="4" >
+                                <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV">  
+                                    <f:selectItem itemLabel="#{msg.slo}" itemValue="" />  
+                                    <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/>  
+                                </h:selectOneMenu>
+                                <h:outputText value="#{msg.npw}"/>        
+                                <h:inputSecret id="inNewPw" value="#{adminController.helpBenutzer.newPass}"  />
+                                <h:commandButton action="#{adminController.setNewOtherPass(adminController.helpBenutzer)}" value="Passwort ändern" style="background-color:darkseagreen;color:white;" />
+                            </h:panelGrid>
+                        </h:form></p:tab>
+
+
+
+                </p:accordionPanel>
+                
+         
+        </ui:composition>
+        
+    </body>
+</html>

@@ -7,11 +7,10 @@ package de.friqql.controller;
 
 
 import de.friqql.jb.ConversionHelperRemote;
-import de.friqql.jb.OrderHelperRemote;
 
-import de.friqql.model.Food;
-import de.friqql.model.POrder;
-import de.friqql.model.Usr;
+import de.friqql.model.Speise;
+import de.friqql.model.Bestellung;
+import de.friqql.model.Benutzer;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,22 +30,23 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import de.friqql.jb.BestellungHelperRemote;
 
 /**
  *
  * @author Teilnehmer
  */
-@Named("orderController")
+@Named("bestellungController")
 @javax.enterprise.context.SessionScoped
-public class OrderController implements Serializable {
+public class BestellungController implements Serializable {
 
-    private POrder myOrder;
-    private ArrayList<POrder> orderL;
+    private Bestellung myBestellung;
+    private ArrayList<Bestellung> orderL;
     @Inject
     private MessagesController messagesController;
     private double sum;
     private double sum2;
-    private Usr myUsr;
+    private Benutzer myBenutzer;
     
     
     private String ipAddress;
@@ -54,32 +54,32 @@ public class OrderController implements Serializable {
     
     
     @Inject
-    private UsrController usrController;
+    private BenutzerController benutzerController;
 
     /**
-     * Der Konstruktor des OrderControllers
+     * Der Konstruktor des BestellungControllers
      */
-    private OrderHelperRemote oh() {
+    private BestellungHelperRemote oh() {
         try {
             Context c = new InitialContext();
-            return (OrderHelperRemote) c.lookup("ejb/orderHelper");
+            return (BestellungHelperRemote) c.lookup("ejb/bestellungHelper");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
 
-    public UsrController getuC() {
-        return usrController;
+    public BenutzerController getuC() {
+        return benutzerController;
     }
 
-    public void setuC(UsrController uC) {
-        this.usrController = uC;
+    public void setuC(BenutzerController uC) {
+        this.benutzerController = uC;
     }
     
     
     
-    public OrderController() {
+    public BestellungController() {
         
     }
 
@@ -87,14 +87,14 @@ public class OrderController implements Serializable {
     public void init(){
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession session = request.getSession();
-        this.myOrder = new POrder();
+        this.myBestellung = new Bestellung();
         this.orderL = new ArrayList();
         
         this.sum = 0.00;
         this.sum2 = 0.00;
         this.messagesController = new MessagesController();
         
-        this.myUsr = new Usr();
+        this.myBenutzer = new Benutzer();
         
     }
     
@@ -115,15 +115,15 @@ public class OrderController implements Serializable {
      * Gibt die aktuelle Bestellung zurück
      * @return 
      */
-    public POrder getMyOrder() {
-        return myOrder;
+    public Bestellung getMyBestellung() {
+        return myBestellung;
     }
 /**
  * Setzt die aktuelle Bestellung
- * @param myOrder 
+ * @param myBestellung 
  */
-    public void setMyOrder(POrder myOrder) {
-        this.myOrder = myOrder;
+    public void setMyBestellung(Bestellung myBestellung) {
+        this.myBestellung = myBestellung;
     }
 /**
  * Gibt die Liste der Aktuellen Bestellungen
@@ -188,7 +188,7 @@ public class OrderController implements Serializable {
  * Fügt eine Bestellung hinzu
  * @param dieListe 
  */
-    public void addToOrder(ArrayList<Food> dieListe) {
+    public void addToBestellung(ArrayList<Speise> dieListe) {
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
@@ -196,26 +196,26 @@ public class OrderController implements Serializable {
 
         int i = 0;
         sum = 0.00;
-        this.myOrder = new POrder();
-myOrder.setOZwischensumme(0.00);
-        for (Food f : dieListe) {
+        this.myBestellung = new Bestellung();
+myBestellung.setZwischensumme(0.00);
+        for (Speise f : dieListe) {
 
-            if (f.getFAmmount() > 0) {
+            if (f.getAmmount() > 0) {
 
-                myOrder.setOFoodId(f.getFId());
-                myOrder.setOName(f.getFName());
-                myOrder.setOAmmount(f.getFAmmount());
-                myOrder.setOIp(request.getRemoteAddr());
-                myOrder.setOSessionId(session.getId());
-                myOrder.setOPrice(f.getFPrice());
-                myOrder.setOZwischensumme(f.getFAmmount() * f.getFPrice());
-                myOrder.setOSince(ch().ConvertDate(new Date()));
+                myBestellung.setFid(f.getId());
+                myBestellung.setName(f.getName());
+                myBestellung.setAmmount(f.getAmmount());
+                myBestellung.setIp(request.getRemoteAddr());
+                myBestellung.setSessionId(session.getId());
+                myBestellung.setPrice(f.getPrice());
+                myBestellung.setZwischensumme(f.getAmmount() * f.getPrice());
+                myBestellung.setSince(ch().ConvertDate(new Date()));
                 
-                myUsr = usrController.getMyUsr();
-                myOrder.setOuId(myUsr.getUId());
-                sum += myOrder.getOZwischensumme();
-                orderL.add(i, myOrder);
-                myOrder = new POrder();
+                myBenutzer = benutzerController.getMyBenutzer();
+                myBestellung.setUid(myBenutzer.getId());
+                sum += myBestellung.getZwischensumme();
+                orderL.add(i, myBestellung);
+                myBestellung = new Bestellung();
 
                 i++;
 
@@ -230,7 +230,7 @@ myOrder.setOZwischensumme(0.00);
                 messagesController.order_e();
             }
         } catch (IOException ex) {
-            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BestellungController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 /**
@@ -244,17 +244,17 @@ myOrder.setOZwischensumme(0.00);
  * @param dieListe
  * @return 
  */
-    public boolean full(List<Food> dieListe) {
-        for (Food f : dieListe) {
+    public boolean full(List<Speise> dieListe) {
+        for (Speise f : dieListe) {
 
-            if (f.getFAmmount() > 0) {
+            if (f.getAmmount() > 0) {
                 return true;
             }
         }
         return false;
     }
 /**
- * Speichert die Bestellungen der Liste OrderL in der Datenbank
+ * Speichert die Bestellungen der Liste BestellungL in der Datenbank
  */
     public void save() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -262,13 +262,13 @@ myOrder.setOZwischensumme(0.00);
         HttpSession session = request.getSession();
 
         try {
-            for (POrder o : orderL) {
-                oh().storeOrder(o);
+            for (Bestellung b : orderL) {
+                oh().storeBestellung(b);
             }
 
             response.sendRedirect("/myNewPizza-war/danke.xhtml");
         } catch (IOException ex) {
-            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BestellungController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 /**
@@ -277,7 +277,7 @@ myOrder.setOZwischensumme(0.00);
  */
     public int num() {
 
-        int num = oh().numOrderedToday();
+        int num = oh().numBestellungedToday();
         return num;
 
     }
@@ -286,7 +286,7 @@ myOrder.setOZwischensumme(0.00);
  * @return 
  */
     public double sum() {
-        sum2 = oh().sumOrderedToday();
+        sum2 = oh().sumBestellungedToday();
         return sum2;
     }
 
