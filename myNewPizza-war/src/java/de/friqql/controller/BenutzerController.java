@@ -48,7 +48,26 @@ public class BenutzerController implements Serializable {
     private MessagesController messagesController;
     private List<Benutzer> benutzerlist;
    
-
+    
+    @PostConstruct
+    /**
+     * Die Initmethode
+     */
+    public void init(){
+        
+       myBenutzer = new Benutzer();
+       
+       
+        benutzerlist = new ArrayList();
+        benutzerlist = benutzerlist();
+    }
+    
+    
+/**
+ * Das Interface des BenutzerHelpers
+ * @return 
+ * Gibt das Interface zurück
+ */
  private BenutzerHelperRemote uh() {
         try {
             Context c = new InitialContext();
@@ -59,7 +78,11 @@ public class BenutzerController implements Serializable {
         }
     }
     
-    
+    /**
+     * Das Interface des ConversionHelpers
+     * @return 
+     *Gibt den ConversionHelper zurück
+     */
     private ConversionHelperRemote ch() {
         try {
             Context c = new InitialContext();
@@ -69,28 +92,23 @@ public class BenutzerController implements Serializable {
             throw new RuntimeException(ne);
         }
     }
-    
+    /**
+     * Der Standardkonstruktor des Benutzerkontrollers
+     */
     public BenutzerController() {
         
        
         
     }
     
-    @PostConstruct
-    public void init(){
-        
-       myBenutzer = new Benutzer();
-       
-       
-        benutzerlist = new ArrayList();
-        benutzerlist = benutzerlist();
-    }
+    
 
     
    
     /**
-     * Gibt den aktuellen Benutzer zurück
+     * Der aktuelle Benutzer
      * @return 
+     * Gibt den aktuellen Benutzer zurück
      */
     public Benutzer getMyBenutzer() {
 
@@ -121,6 +139,7 @@ public class BenutzerController implements Serializable {
 /**
  * Testet, ob ein Benutzer eingeloggt ist
  * @return 
+ * Gibt zurück ob er eingeloggt ist, oder nicht
  */
     public boolean isLogedIn() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -133,6 +152,7 @@ public class BenutzerController implements Serializable {
 /**
  * Testet ob ein Benutzer ein Kunde ist
  * @return 
+ * Gibt zurück, ob er ein Kunde ist
  */
     public boolean isCustomer() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -169,8 +189,9 @@ public class BenutzerController implements Serializable {
     }
 
     /**
-     * Liste aller Benutzer (auch Admins, Name aus historischen Gründen)
+     * Liste aller Benutzer 
      * @return 
+     * Gibt alle Benutzer zurück
      */
     public List<Benutzer> getBenutzerlist() {
         return benutzerlist;
@@ -178,6 +199,7 @@ public class BenutzerController implements Serializable {
 /**
  * Setzt die Liste aller Benutzer
  * @param benutzerlist 
+ * Die Liste der Benutzer
  */
     public void setBenutzerlist(List<Benutzer> benutzerlist) {
         this.benutzerlist = benutzerlist;
@@ -187,13 +209,7 @@ public class BenutzerController implements Serializable {
     
     
     
-   /**
-    * Führt zum Index
-    * @return 
-    */ 
-    public String toIndex() {
-        return "toIndex";
-    }
+
 /**
  * Dient zur Registrierung, wenn der Benutzername nicht vergeben ist
  */
@@ -232,12 +248,13 @@ else{
             uh().changePassword(myBenutzer);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Passwort geändert", "Hat funktioniert!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes! Altes PW eingegeben: " +ch().hash(myBenutzer.getOldPass())+"Tatsächliches altes PW: "+myBenutzer.getPassword()+""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!","Fehler beim ändern des Passwortes!"));
         }
     }
     /**
      * Die Liste aller Benutzer
      * @return 
+     * Gibt die Liste aller Benutzer zurück
      */
     public List<Benutzer> benutzerlist(){
         benutzerlist=uh().getBenutzerlist();

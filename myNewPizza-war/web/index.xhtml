@@ -7,6 +7,9 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
         <title>Facelet Title</title>
         <f:loadBundle var='msg' basename='messages'/>
         <f:loadBundle var='war' basename='warnung'/>
@@ -16,13 +19,455 @@
             <f:viewAction action="#{bestellungController.reset()}" />
         </f:metadata>
     </h:head>
-    <h:body>
+    <h:body style="background-color:darkkhaki">
 
-   <ui:insert>
-            <ui:include src="/index/Template.xhtml"/>
-        </ui:insert>
-           
-      
+        <div id="page" >
+            <p:layout fullPage="true">
+
+                <!--|||||||||||||||||||||||||||||||||||||||||||||||||||||HEADER||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+                <p:layoutUnit position="north" style="border-radius: 1px;padding:0px; border:2px solid black;" resizable="true">
+                    <div id="header" style="color:burlywood;padding-top:7px;padding-bottom:7px; background-color:seagreen;text-align:center">
+                        <h:outputText value="#{msg.servus}" style="font-size:25px" rendered="#{not benutzerController.logedIn}"/><br/>
+
+                        <h:outputText value="#{msg.servus}, #{benutzerController.myBenutzer.benutzername}" style="font-size:30px" rendered="#{benutzerController.logedIn}"/>
+                        <h:outputText value="#{msg.mes}"  rendered="#{not benutzerController.logedIn and navigationController.page=='toIndex'}"/>
+                        <h:outputText value="#{msg.admns}" rendered="#{navigationController.page=='tad'}"/>
+                        <h:outputText value="#{msg.thx}" rendered="#{navigationController.page=='danke'}"/>
+                        <h:outputText value="#{msg.myac}" rendered="#{navigationController.page=='tmc'}"/>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="false" />
+                    </div>
+                </p:layoutUnit>
+
+                <!--|||||||||||||||||||||||||||||||||||||||||||||||||||||WEST||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+                <p:layoutUnit position="west"  style="background-color:PaleGoldenRod;border:2px solid black;padding:0px;">
+                    <div id="content" style=" background-color:PaleGoldenRod; height:100%">
+                        <h:form style="font-size:14px;">
+
+
+                            <h:commandButton action='#{localeController.switchLang()}' value="#{msg.lde}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" /><br/>
+                            
+
+                            <h:commandButton  action="#{navigationController.tad()}" value="#{msg.adm}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered='#{request.isUserInRole("Admin") and  navigationController.page!="tad" and  navigationController.page!="zsf" and navigationController.page!="danke"}'/><br/>
+                            <h:commandButton  action="#{navigationController.tmc()}" value="#{msg.mac}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered='#{benutzerController.logedIn and  navigationController.page!="tmc" and  navigationController.page!="zsf" and navigationController.page!="danke"}'/><br/>
+                            <h:commandButton action="#{navigationController.toIndex()}" value="#{msg.zrk}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered="#{navigationController.page!='toIndex'}"/>
+                            <h:commandButton action="#{benutzerController.logOut()}" value="#{msg.loo}" style="background-color:darkseagreen;color:white;font-size:14px; width:100%;" rendered="#{benutzerController.logedIn and navigationController.page=='toIndex'}"/>
+
+                        </h:form>
+                    </div>
+                </p:layoutUnit>
+                <!--|||||||||||||||||||||||||||||||||||||||||||||||||||||CENTER||||||||||||||||||||||||||||||||||||||||||||||||||||| -->
+                <p:layoutUnit position="center"  style="background-color:PaleGoldenRod;border-radius:1px;border:2px solid black;padding:0px;">
+                    <div id="content2" style=" background-color:PaleGoldenRod;height:100%">
+                        <!--##############################################INDEX##############################################-->
+                        <ui:fragment  rendered="#{navigationController.page=='toIndex'}">
+
+                            <p:accordionPanel rendered="#{not benutzerController.logedIn}">
+                                <!-- ***************************************EINLOGGEN***************************************-->
+
+                                <p:tab title="#{msg.lin}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form style="font-size:14px;margin:0px;padding:0px">
+
+
+                                        <h:panelGrid columns="3" style="font-size:14px;">
+                                            <h:outputLabel for="inbenutzername" value="#{msg.ben}" />
+                                            <h:inputText id="inbenutzername" value="#{benutzerController.myBenutzer.benutzername}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.bnnl()}'/>
+                                            <p:message for="inbenutzername"/>
+                                            <h:outputLabel for="inPassword" value="#{msg.pw}" />
+
+                                            <h:inputSecret id="inPassword" value="#{benutzerController.myBenutzer.password}" style="background-color:lavender" required="true" requiredMessage='#{messagesController.pwnl()}'/>
+                                            <p:message for="inPassword"/>
+
+                                            <h:commandButton action="#{benutzerController.login()}" value="#{msg.lin}" style="background-color:darkseagreen;color:white;font-size:14px;"/>
+                                        </h:panelGrid>
+
+
+                                    </h:form>
+
+
+
+
+                                </p:tab>
+
+                                <!-- ***************************************REGISTRIEREN***************************************-->
+                                <p:tab title="#{msg.reg}" titleStyle="background-color:darkseagreen">
+                                    <h:form style="font-size:14px;">
+
+                                        <h:panelGrid columns="6" style="font-size:14px;">
+
+
+                                            <h:outputLabel for="inbenutzername" value="#{msg.ben}" />
+                                            <h:inputText id="inbenutzername" value="#{benutzerController.myBenutzer.benutzername}" required="true" requiredMessage='#{messagesController.reg_e()} #{messagesController.bnnl()}'/>
+                                            <h:outputLabel for="inPassword" value="#{msg.pw}" />
+                                            <h:inputSecret id="inPassword" value="#{benutzerController.myBenutzer.password}" required="true"   requiredMessage='#{messagesController.pwnl()}'/>
+
+
+                                            <h:outputLabel for="intitle" value="#{msg.sex}" />
+                                            <h:selectOneMenu id="intitle" value="#{benutzerController.myBenutzer.title}" required="true" requiredMessage='#{messagesController.ttnl()}'>
+                                                <f:selectItem itemValue="Herrn" itemLabel="#{msg.man}" />
+                                                <f:selectItem itemValue="Frau" itemLabel="#{msg.fem}" />
+                                            </h:selectOneMenu>
+
+                                            <h:outputLabel for="infirstname" value="#{msg.vn}" />
+                                            <h:inputText id="infirstname" value="#{benutzerController.myBenutzer.firstname}" required="true" requiredMessage='#{messagesController.fnnl()}' />
+                                            <h:outputLabel for="inlastname" value="#{msg.nn}" />
+                                            <h:inputText  id="inlastname" value="#{benutzerController.myBenutzer.lastname}" required="true" requiredMessage='#{messagesController.lnnl()}'/>
+                                            <h:outputLabel for="instreet" value="#{msg.str}" />
+                                            <h:inputText id="instreet" value="#{benutzerController.myBenutzer.street}" required="true" requiredMessage='#{messagesController.stnl()}'/>
+                                            <h:outputLabel for="inhouse" value="#{msg.hn}" />
+                                            <h:inputText  id="inhouse" value="#{benutzerController.myBenutzer.house}" required="true" requiredMessage='#{messagesController.hnnl()}' />
+                                            <h:outputLabel for="inplz" value="#{msg.plz}" />
+                                            <h:inputText id="inplz" value="#{benutzerController.myBenutzer.plz}" required="true" requiredMessage='#{messagesController.plznl()}' />
+                                            <h:outputLabel for="inplace" value="#{msg.ort}" />
+                                            <h:inputText  id="inplace" value="#{benutzerController.myBenutzer.place}" required="true" requiredMessage='#{messagesController.ornl()}'/>
+
+
+
+                                            <h:commandButton action="#{benutzerController.register()}" value="#{msg.reg}" style="background-color:darkseagreen;color:white;"/>
+                                        </h:panelGrid>
+                                    </h:form>
+                                    <h:form style="font-size:14px;"><h:commandButton action="#{benutzerController.reset()}" value="#{msg.res}" style="background-color:darkseagreen;color:white;font-size:14px;"/></h:form>
+                                </p:tab>
+
+                            </p:accordionPanel>
+
+                            <!-- ***************************************BESTELLUNG***************************************-->
+
+                            <h:form>
+
+                                <h:dataTable id="speise" value="#{speiseController.speiselist}" var="speise" style="font-size:14px;">
+                                    <f:facet name="header">#{msg.usk}</f:facet>
+                                    <h:column>
+                                        <f:facet name ="header">#{msg.num}</f:facet>
+
+
+                                        <h:outputText value="#{speise.id}" />
+
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">#{msg.nam}</f:facet>
+
+                                        <h:outputText value="#{speise.name}"/>
+
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">#{msg.prs}</f:facet>
+
+                                        <h:outputText value="#{speise.price}">
+                                            <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                                        </h:outputText>
+
+                                    </h:column>
+
+
+                                    <h:column rendered="#{benutzerController.logedIn}">
+                                        <f:facet name="header" >#{msg.men} </f:facet>
+
+                                        <h:inputText value="#{speise.ammount}"/>
+
+                                    </h:column>
+
+                                </h:dataTable>
+
+                                <h:commandButton action="#{bestellungController.addToBestellung(speiseController.speiselist)}" value="#{msg.plus}" rendered="#{benutzerController.logedIn}" style="background-color:darkseagreen;color:white;"/>
+
+
+
+                                <h:commandButton action="#{speiseController.reset(speiseController.speiselist)}" value="#{msg.res}" rendered="#{benutzerController.logedIn}" style="background-color:darkseagreen;color:white;">
+                                    <f:actionListener binding="#{bestellungController.reset()}" />
+                                </h:commandButton>
+
+                            </h:form>
+
+                        </ui:fragment>
+
+
+
+                        <!--##############################################MY ACCOUNT##############################################-->
+                        <ui:fragment  rendered="#{navigationController.page=='tmc'}">
+
+                            <p:accordionPanel>
+                            <!-- ***************************************PASSWORT ÄNDERN***************************************-->
+                                <p:tab title="#{msg.pae}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form>
+                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                                        <h:outputText value="#{msg.apw}"/>
+                                        <h:inputText id="inOldPw" value="#{benutzerController.myBenutzer.oldPass}" required="true" />
+                                        <h:outputText value="#{msg.npw}"/>
+                                        <h:inputText id="inNewPw" value="#{benutzerController.myBenutzer.newPass}" required="true" />
+                                        <h:commandButton action="#{benutzerController.setNewPass()}" value="#{msg.pae}" style="background-color:darkseagreen;color:white;" />
+                                    </h:form>
+
+
+                                </p:tab>
+                                    <!-- ***************************************ADRESSE ÄNDERN***************************************-->
+                                <p:tab title="#{msg.aae}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form>
+                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                                        <h:form style="font-size:14px;">
+
+                                            <h:panelGrid columns="6" style="font-size:14px;">
+
+
+
+
+
+
+
+
+                                                <h:outputLabel for="inFirstname" value="#{msg.vn}" />
+                                                <h:inputText id="inFirstname" value="#{benutzerController.myBenutzer.firstname}" required="true" />
+                                                <h:outputLabel for="inLastname" value="#{msg.nn}" />
+                                                <h:inputText  id="inLastname" value="#{benutzerController.myBenutzer.lastname}" required="true" />
+                                                <h:outputLabel for="inStreet" value="#{msg.str}" />
+                                                <h:inputText id="inStreet" value="#{benutzerController.myBenutzer.street}" required="true" />
+                                                <h:outputLabel for="inHouse" value="#{msg.hn}" />
+                                                <h:inputText  id="inHouse" value="#{benutzerController.myBenutzer.house}" required="true" />
+                                                <h:outputLabel for="inPlz" value="#{msg.plz}" />
+                                                <h:inputText id="inPlz" value="#{benutzerController.myBenutzer.plz}" required="true" />
+                                                <h:outputLabel for="inPlace" value="#{msg.ort}" />
+                                                <h:inputText  id="inPlace" value="#{benutzerController.myBenutzer.place}" required="true" />
+
+
+                                                <h:commandButton action="#{benutzerController.updateBenutzer()}" value="#{msg.aae}" style="background-color:darkseagreen;color:white;" />
+                                            </h:panelGrid>
+                                        </h:form>
+
+                                    </h:form>
+
+
+                                </p:tab>
+
+
+
+                            </p:accordionPanel>
+
+                        </ui:fragment>
+
+
+
+
+
+
+
+
+
+                        <!--##############################################ADMIN##############################################-->
+                        <ui:fragment  rendered="#{navigationController.page=='tad'}">
+
+                            <p:accordionPanel multiple="true" activeIndex="0,1,2">
+                            <!-- ***************************************SESSIONS***************************************-->
+                                <p:tab title="SESSIONS" titleStyle="background-color:darkseagreen">
+
+                                    <h:outputText value="#{request.getHeader('user-Agent')}"/>
+                                    <br/>
+                                    <h:outputText value="#{msg.azs} #{adminController.asl.getActiveSessions().size()}"/>
+
+
+
+                                    <h:dataTable id="sessions" value="#{adminController.sessionMaps()}" var="sess">
+                                        <f:facet name="header">Sessions</f:facet>
+                                        <h:column>
+                                            <f:facet name ="header">ID:</f:facet>
+
+
+                                            <h:outputText value="#{sess.get('id')}" />
+
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">#{msg.crea}</f:facet>
+
+                                            <h:outputText value="#{sess.get('creation')}" />
+
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">#{msg.idle}</f:facet>
+
+                                            <h:outputText value="#{sess.get('inactive')}" />
+
+
+                                        </h:column>
+
+
+
+                                    </h:dataTable>
+
+
+
+
+
+
+
+                                </p:tab>
+                              <!-- ***************************************STATISTIK***************************************-->
+                                <p:tab title="#{msg.stat}" titleStyle="background-color:darkseagreen">
+
+                                    <h:outputText value="#{msg.bh} #{bestellungController.num()} #{msg.bs}"/><br/>
+                                    <h:outputText value="#{msg.zsd}"/>
+
+                                    <h:outputText value="#{bestellungController.sum()}">
+                                        <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                                    </h:outputText>
+
+
+
+
+
+
+
+
+                                </p:tab>
+
+
+
+                                    <!-- ***************************************VERMERKE ANZEIGEN***************************************-->
+                                <p:tab title="#{msg.verma}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form>
+                                        <h:panelGrid columns="3">
+                                            <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV" onchange="submit()" valueChangeListener="#{adminController.getVermerkById(adminController.helpBenutzer.id)}">
+
+                                                <f:selectItem itemLabel="#{msg.slo}" itemValue="" />
+                                                <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/>
+
+                                            </h:selectOneMenu>
+
+
+                                            <h:inputText id="outSperr" value="#{adminController.getVermerkById(adminController.helpBenutzer.id)}" readonly="true" />
+
+
+                                        </h:panelGrid>
+
+                                    </h:form>
+                                </p:tab>
+
+                            <!-- ***************************************VERMERKE EDITIEREN***************************************-->
+                                <p:tab title="#{msg.verme}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form>
+                                        <h:panelGrid columns="3">
+                                            <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV">
+
+                                                <f:selectItem itemLabel="#{msg.slo}" itemValue="" />
+                                                <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/>
+
+                                            </h:selectOneMenu>
+
+
+
+
+                                            <h:inputText id="inSperr" value="#{adminController.helpBenutzer.vermerk}" />
+                                            <h:commandButton action="#{adminController.setVermerk(adminController.helpBenutzer)}" value="Sperrvermerk hinzufügen" style="background-color:darkseagreen;color:white;" />
+
+                                        </h:panelGrid>
+
+                                    </h:form>
+                                </p:tab>
+
+
+
+                                <p:tab title="#{msg.passae}" titleStyle="background-color:darkseagreen">
+
+                                    <h:form>
+
+
+                                        <h:panelGrid columns="4" >
+                                            <h:selectOneMenu value="#{adminController.helpBenutzer}" id="selectBenutzer"  converter="benutzerCNV">
+                                                <f:selectItem itemLabel="#{msg.slo}" itemValue="" />
+                                                <f:selectItems value="#{benutzerController.benutzerlist}" var="myBenutzer" itemLabel=" #{myBenutzer.id}   #{myBenutzer.benutzername}" itemValue="#{myBenutzer}"/>
+                                            </h:selectOneMenu>
+                                            <h:outputText value="#{msg.npw}"/>
+                                            <h:inputSecret id="inNewPw" value="#{adminController.helpBenutzer.newPass}"  />
+                                            <h:commandButton action="#{adminController.setNewOtherPass(adminController.helpBenutzer)}" value="Passwort ändern" style="background-color:darkseagreen;color:white;" />
+                                        </h:panelGrid>
+                                    </h:form></p:tab>
+
+
+
+                            </p:accordionPanel>
+
+                        </ui:fragment>
+                        <!--##############################################ZUSAMMENFASSUNG##############################################-->
+                        <ui:fragment rendered="#{navigationController.page=='zsf'}">
+
+                            <f:view>
+
+                              <h:outputText value="#{msg.iad}" style="font-size:1.5em;"/>
+                                <h:outputText value="#{benutzerController.myBenutzer.firstname} " />
+                                <h:outputText value="#{benutzerController.myBenutzer.lastname}" />
+                                <br/>
+                                <h:outputText value="#{benutzerController.myBenutzer.street} " />
+                                <h:outputText value="#{benutzerController.myBenutzer.house}" />
+                                <br/>
+                                <h:outputText value="#{benutzerController.myBenutzer.plz} " />
+                                <h:outputText value="#{benutzerController.myBenutzer.place}" />
+                                <hr/>
+                                <h:panelGrid columns="7">
+
+
+
+                                    <c:forEach var="od" begin="0" end="#{bestellungController.orderL.size()-1}" step="1">
+                                        <h:outputText value="#{msg.pos} #{od+1}:" style="font-weight: 700"/>
+
+                                        <h:outputText value="#{bestellungController.orderL.get(od).name} "/>
+                                        <h:outputText value="Anzahl: #{bestellungController.orderL.get(od).ammount} "/>
+                                        <h:outputText value="#{msg.ezp} "/>
+                                        <h:outputText value="#{bestellungController.orderL.get(od).price}">
+                                            <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                                        </h:outputText>
+                                        <h:outputText value="#{msg.zsm} "/>
+                                        <h:outputText value="#{bestellungController.orderL.get(od).zwischensumme}">
+                                            <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                                        </h:outputText>
+
+                                    </c:forEach>
+
+
+
+
+                                </h:panelGrid>
+
+                            </f:view>
+                            <h:form>
+                                <h:outputText value="#{msg.sum}"/><h:outputText value="#{bestellungController.sum}">
+                                    <f:convertNumber type="currency" currencySymbol="€" locale="pt-PT" />
+                                </h:outputText>
+                                <br/>
+                                <h:commandButton action="#{benutzerController.toIndex()}" value="#{msg.bae}" style="background-color:darkseagreen;color:white;" >
+                                    <f:actionListener binding="#{speiseController.reset(speiseController.speiselist)}" />
+                                    <f:actionListener binding="#{bestellungController.reset()}" />
+                                </h:commandButton>
+                                <h:commandButton action="#{bestellungController.save()}" value="#{msg.sb}" style="background-color:darkseagreen;color:white;" >
+
+                                </h:commandButton>
+
+                            </h:form>
+
+
+                        </ui:fragment>
+                        <!--##############################################DANKE##############################################-->
+                        <ui:fragment rendered="#{navigationController.page=='danke'}">
+                            <h:outputText value="#{msg.dfbs}" />
+                            <h:form>
+                                <h:commandButton action="#{navigationController.tr()}" value="#{msg.zrre}" style="background-color:darkseagreen;color:white;font-size:14px;"/>
+                            </h:form>
+
+                        </ui:fragment>
+                    </div>
+                </p:layoutUnit>
+
+
+
+            </p:layout>
+        </div>
+
+
 
     </h:body>
 </html>

@@ -72,6 +72,7 @@ public class SpeiseController implements Serializable {
 /**
  * Gibt eine Speise zurück
  * @return 
+ * Gibt eine Speise zurückt
  */
     public Speise getSpeise() {
         return speise;
@@ -88,6 +89,7 @@ public class SpeiseController implements Serializable {
 /**
  * Gibt eine fId einer Speise zurück
  * @return 
+ * Gibt eine fId einer Speise zurück
  */
     public int getfId() {
         return fId;
@@ -95,6 +97,7 @@ public class SpeiseController implements Serializable {
 /**
  * Setzt eine fId
  * @param fId 
+ * Die Id
  */
     public void setfId(int fId) {
         this.fId = fId;
@@ -102,6 +105,7 @@ public class SpeiseController implements Serializable {
 /**
  * Die Liste der Speisen wird zurückgegeben
  * @return 
+ * Gibt die Liste der Speisen zurück
  */
     public ArrayList<Speise> getSpeiselist() {
 
@@ -110,6 +114,7 @@ public class SpeiseController implements Serializable {
 /**
  * Die Liste der Speisen wird gesetzt
  * @param speiselist 
+ * die Liste der speisen
  */
     public void setSpeiselist(ArrayList speiselist) {
         this.speiselist = speiselist;
@@ -117,9 +122,10 @@ public class SpeiseController implements Serializable {
 
    
 /**
- * Gibt eine Speise zurück nach der fId
+ *  eine Speise nach der fId
  * @param fId
  * @return 
+ * gibt die Speise zurück
  */
     public Speise getSpeiseById(Integer fId) {
         speise = helper().getSpeiseById(fId);
@@ -128,6 +134,7 @@ public class SpeiseController implements Serializable {
 /**
  * Zählt wieviele Speisen es gibt
  * @return 
+ * gibt die Anzahl zurück
  */
     public int countSpeise() {
 
@@ -136,6 +143,7 @@ public class SpeiseController implements Serializable {
 /**
  * Setzt die Speiseliste zurück
  * @param dieListe 
+ * Die Liste der speisen
  */
     public void reset(ArrayList<Speise> dieListe) {
         for (Speise s : dieListe) {

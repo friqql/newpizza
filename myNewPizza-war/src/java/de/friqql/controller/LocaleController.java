@@ -25,7 +25,7 @@ public class LocaleController implements Serializable {
      * Der Konstruktor für den Language Controller
      */
     public LocaleController() {
-        this.language = new Locale("en");
+        this.language = new Locale("de");
     }
 
     
@@ -33,6 +33,7 @@ public class LocaleController implements Serializable {
     /**
      * Gibt die Locale zurück
      * @return 
+     * Gibt die Locale zurück
      */
     public Locale getLanguage() {
         return language;
@@ -46,10 +47,17 @@ public class LocaleController implements Serializable {
     }
 /**
  * Ändert die Sprache
- * @param l 
+
  */
-    public void switchLang(String l) {
-        language = new Locale(l);
+    public void switchLang() {
+        if(getLanguage().getLanguage().equals("de"))
+        {
+        language = new Locale("en");
+        }
+        else
+          {
+        language = new Locale("de");
+        }   
         FacesContext.getCurrentInstance().getViewRoot().setLocale(language);
         
     }

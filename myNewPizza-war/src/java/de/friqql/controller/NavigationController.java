@@ -31,47 +31,67 @@ import javax.servlet.http.HttpSession;
 public class NavigationController implements Serializable {
 @Inject
 private LocaleController localeController;
+private String page;
+
+    public NavigationController() {
+        
+        page = "toIndex";
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
+    }
+
+
+
+
+
     /**
      * Navigation zum Index
-     * @return 
+    
      */
-    public String toIndex() {
+    public void toIndex() {
         
-            localeController.switchLang(localeController.getLanguage().toString());
-        return "toIndex";
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(localeController.getLanguage());
+            page ="toIndex";
+       
     }
 /**
  * Navigation zu MyAcconut
- * @return 
+
  */
-    public String tmc() {
-         localeController.switchLang(localeController.getLanguage().toString());
-        return "tmc";
+    public void tmc() {
+         FacesContext.getCurrentInstance().getViewRoot().setLocale(localeController.getLanguage());
+         page = "tmc";
+        
     }
 /**
  * Navigation zu Administration
- * @return 
+
  */
-    public String tad() {
-        localeController.switchLang(localeController.getLanguage().toString());
-        return "tad";
+    public void tad() {
+        FacesContext.getCurrentInstance().getViewRoot().setLocale(localeController.getLanguage());
+        page = "tad";
+        
     }
 /**
  * Navigation zur Dankepage
+
  */
     public void danke(){
-        localeController.switchLang(localeController.getLanguage().toString());
-        danke2();
+        FacesContext.getCurrentInstance().getViewRoot().setLocale(localeController.getLanguage());
+          page="danke";
     }
     
-      public String danke2() {
-          localeController.switchLang(localeController.getLanguage().toString());
-        return "danke";
-    }
       
-         public String zsf() {
-          localeController.switchLang(localeController.getLanguage().toString());
-        return "zsf";
+         public void zsf() {
+          FacesContext.getCurrentInstance().getViewRoot().setLocale(localeController.getLanguage());
+          page="zsf";
+        
     }
     /**
      * Navigation zur Rechnung

@@ -20,6 +20,7 @@ public class ActiveSessionsListener implements HttpSessionListener {
    /**
     * Wird gerufen, wenn eine Session erzeugt wurde
     * @param event
+    * Das event
     */
    @Override
    public void sessionCreated(HttpSessionEvent event) {
@@ -38,6 +39,7 @@ public class ActiveSessionsListener implements HttpSessionListener {
    /**
     * Wird gerufen, wenn eine Session verfällt oder auch zerstört
     * @param event
+    * das event
     */
    @Override
    public void sessionDestroyed(HttpSessionEvent event) {
@@ -54,6 +56,7 @@ public class ActiveSessionsListener implements HttpSessionListener {
    /**
     * Gibt die Liste der aktiven Sessions zurück
     * @return activeS
+    * Gibt die Liste der aktiven Sessions zurück
     */
    public  static Map<String, HttpSession> getActiveSessions() {
       return activeS;

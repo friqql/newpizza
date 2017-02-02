@@ -74,6 +74,7 @@ public class MessagesController implements Serializable{
       /**
        * Das Passwortfeld ist leer
        * @return 
+       * Die Message
        */
       public String pwnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -87,7 +88,8 @@ public class MessagesController implements Serializable{
       }
       /**
        * Das Benutzernamefeld ist leer
-       * @return 
+       * @return  
+       * Die Message
        */
        public String bnnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -101,7 +103,8 @@ public class MessagesController implements Serializable{
       }
        /**
         * Der Vorname ist leer
-        * @return 
+        * @return  
+       * Die Message
         */
        public String fnnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -115,7 +118,8 @@ public class MessagesController implements Serializable{
       }
        /**
         * Der Nachname ist leer
-        * @return 
+        * @return  
+       * Die Message
         */
        public String lnnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -127,9 +131,26 @@ public class MessagesController implements Serializable{
           return "The field Last Name must not be empty!"; 
           }
       }
+        /**
+       * Der Titel ist leer
+       * @return  
+       * Die Message
+       */
+      public String ttnl(){
+          if (localeController.getLanguage().getLanguage().equals("de")){
+          
+          return "Das Feld Straße darf nicht leer sein!";
+          }
+          else{
+            
+          return "The field Street must not be empty!"; 
+          }
+      }
+       
       /**
        * Die Straße ist leer
-       * @return 
+       * @return  
+       * Die Message
        */
       public String stnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -143,7 +164,8 @@ public class MessagesController implements Serializable{
       }
       /**
        * Die Hausnummer ist leer
-       * @return 
+       * @return  
+       * Die Message
        */
       public String hnnl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -157,7 +179,8 @@ public class MessagesController implements Serializable{
       }
       /**
        * Die PLZ ist leer
-       * @return 
+       * @return  
+       * Die Message
        */
       public String plznl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -171,7 +194,8 @@ public class MessagesController implements Serializable{
       }
       /**
        * Der Ort ist leer
-       * @return 
+       * @return  
+       * Die Message
        */
       public String ornl(){
           if (localeController.getLanguage().getLanguage().equals("de")){
@@ -183,7 +207,11 @@ public class MessagesController implements Serializable{
           return "The field Place must not be empty!"; 
           }
       }
-      
+        /**
+       * Einloggen fehlgeschlagen
+       * @return  
+       * Die Message
+       */
       public String nnli(){
           if (localeController.getLanguage().getLanguage().equals("de")){
           

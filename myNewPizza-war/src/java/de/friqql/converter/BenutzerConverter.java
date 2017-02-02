@@ -25,6 +25,14 @@ public class BenutzerConverter implements Converter {
 @Inject
 BenutzerController usrController;
 
+/**
+ * Als Objekt
+ * @param facesContext
+ * @param component
+ * @param submittedValue
+ * @return 
+ * Gibt das Objekt zurück
+ */
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent component, String submittedValue) {
         HttpServletRequest request =(HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -51,7 +59,14 @@ BenutzerController usrController;
 
         return null;
     }
-
+/**
+ * Als String
+ * @param facesContext
+ * @param component
+ * @param value
+ * @return 
+ * Gibt den String zurück
+ */
     @Override
     public String getAsString(FacesContext facesContext, UIComponent component, Object value) {
         if (value == null || value.equals("")) {

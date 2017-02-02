@@ -52,11 +52,16 @@ public class AdminController implements Serializable {
     private Benutzer helpBenutzer;
   
     private String vermerk;
-
+/**
+ * Der Standardkonstruktor des Adminkontrollers
+ */
     public AdminController() {
         
     }
     @PostConstruct
+    /**
+     * Die Initmethode
+     */
     public void init(){
         this.asl = new ActiveSessionsListener();
         this.sessionMap = new HashMap();
@@ -68,7 +73,8 @@ public class AdminController implements Serializable {
     }
 /**
  * Eine Liste mit den Sessions
- * @return  die Sessionliste
+ * @return  
+ * Gib die Sessionliste zurück
  */
     public List<Map> sessionMaps() {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -93,7 +99,11 @@ public class AdminController implements Serializable {
 
         return sessionMaps;
     }
-    
+    /**
+     * Das Interface des BenutzerHelpers
+     * @return 
+     * gibt das Interface zurück
+     */
      private BenutzerHelperRemote uh() {
         try {
             Context c = new InitialContext();
@@ -107,8 +117,9 @@ public class AdminController implements Serializable {
     
     
 /**
- * Gibt den Listener zurück
+ * Der Active Session Listener
  * @return 
+ * Gibt den Listener zurück
  */
     public ActiveSessionsListener getAsl() {
         return asl;
@@ -116,27 +127,31 @@ public class AdminController implements Serializable {
 /**
  * Setzt den Listener
  * @param asl 
+ * Der Active Session listener
  */
     public void setAsl(ActiveSessionsListener asl) {
         this.asl = asl;
     }
 /**
- * Gibt die Sessionmap zurück
+ * Die Session Map
  * @return 
+ * Gibt die Sessionmap zurück
  */
     public Map getSessionMap() {
         return sessionMap;
     }
 /**
  * Setzt die SessionMap
- * @param sessionMap 
+ * @param sessionMap
+ * Die sessionMap
  */
     public void setSessionMap(Map sessionMap) {
         this.sessionMap = sessionMap;
     }
 /**
- * Gibt die Session Map zurück
+ * Die Liste der Session Maps
  * @return 
+ * Gibt die Liste der Session Map zurück
  */
     public List<Map> getSessionMaps() {
         return sessionMaps;
@@ -144,6 +159,7 @@ public class AdminController implements Serializable {
 /**
  * Setzt die Liste der Session Maps
  * @param sessionMaps 
+ * Die Liste der SessionMaps
  */
     public void setSessionMaps(List<Map> sessionMaps) {
         this.sessionMaps = sessionMaps;
@@ -151,7 +167,8 @@ public class AdminController implements Serializable {
 
     /**
      * Ändert das Passwort eines Benutzers
-     * @param helpBenutzer 
+     * @param helpBenutzer
+     * Der Benutzer, der bearbeitet werden soll
      */
     public void setNewOtherPass(Benutzer helpBenutzer) {
 
@@ -162,8 +179,9 @@ public class AdminController implements Serializable {
 
 
     /**
-     * Gibt den Benutzer zurück, mit dem gearbeitet wird
+     * Der Benutzer, der bearbeitet werden soll
      * @return 
+     * Gibt den Benutzer zurück, mit dem gearbeitet wird
      */
     public Benutzer getHelpBenutzer() {
         return helpBenutzer;
@@ -171,19 +189,18 @@ public class AdminController implements Serializable {
 /**
  * Setzt den Benutzer, mit dem gearbeitet wird
  * @param helpBenutzer 
+ * Der Benutzer, mit dem gearbeitet werden soll
  */
     public void setHelpBenutzer(Benutzer helpBenutzer) {
         this.helpBenutzer = helpBenutzer;
     }
 
-    /**
-     * Gibt den BenutzerHelper zurück der zum Datenbankzugriff dient
-     * @return 
-     */
+
   
 /**
  * Setzt einen Vermerk über Probleme beim Benutzer
  * @param helpBenutzer 
+ * Der Benutzer über den der Vermerk gesetzt werden soll
  */
     public void setVermerk(Benutzer helpBenutzer) {
         uh().setVermerk(helpBenutzer);
@@ -192,7 +209,9 @@ helpBenutzer.setVermerk("");
 /**
  * Gibt einen Vermerk zurück
  * @param id
+ * Die Id des Benutzers
  * @return 
+ * Gibt den Vermerk zurück
  */
     public String getVermerkById(int id) {
 

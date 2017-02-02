@@ -4,37 +4,7 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
     
-    <navigation-rule>
-        <from-view-id>*</from-view-id>
-        
-        <navigation-case>
-            <from-outcome>toIndex</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-         
-        <from-view-id>*</from-view-id>   
-        <navigation-case>
-            <from-outcome>tmc</from-outcome>
-            <to-view-id>/myAccount.xhtml</to-view-id>
-        </navigation-case>
-        <from-view-id>*</from-view-id>
-        <navigation-case>
-            <from-outcome>tad</from-outcome>
-            <to-view-id>/administration.xhtml</to-view-id>
-        </navigation-case>
-        <from-view-id>*</from-view-id>
-       <navigation-case>
-            <from-outcome>danke</from-outcome>
-            <to-view-id>/danke.xhtml</to-view-id>
-             <redirect/>
-              <from-view-id>*</from-view-id>
-       <navigation-case>
-            <from-outcome>zfs</from-outcome>
-            <to-view-id>/zusammenfassung.xhtml</to-view-id>
-             <redirect/>
-        </navigation-case>
-        </navigation-case>
-    </navigation-rule>
+   
     
     <application>
         <locale-config>
