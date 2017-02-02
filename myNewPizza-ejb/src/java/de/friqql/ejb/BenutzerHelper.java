@@ -41,6 +41,9 @@ public class BenutzerHelper implements BenutzerHelperRemote {
 
     private String helpstring;
 
+    /**
+     * Der Standardkonstruktor des BenutzerHelpers
+     */
     public BenutzerHelper() {
         this.benutzerliste = new ArrayList();
         this.cc = new ConversionHelper();
@@ -48,6 +51,9 @@ public class BenutzerHelper implements BenutzerHelperRemote {
     }
 
     @Override
+    /**
+     * Die Registrierung passiert hier!
+     */
     public void register(Benutzer helpBenutzer) {
 
         {
@@ -66,7 +72,13 @@ public class BenutzerHelper implements BenutzerHelperRemote {
 
     }
 
+    /**
+     * Updatet den Benutzer
+     * @Param helpBenutzer
+     * Der Benutzer der geupdatet werden soll
+     */
     @Override
+    
     public void updateBenutzer(Benutzer helpBenutzer) {
         this.dbBenutzer = helpBenutzer;
 
@@ -74,8 +86,13 @@ public class BenutzerHelper implements BenutzerHelperRemote {
         entityManager.flush();
 
     }
-
+     /**
+     * Updatet das Passwort des gewählten Benutzer
+     * @Param helpBenutzer
+     * Der Benutzer dessen Passwort geupdatet werden soll
+     */
     @Override
+    
     public void changePassword(Benutzer helpBenutzer) {
         this.dbBenutzer = helpBenutzer;
         dbBenutzer.setPassword(cc.hash(dbBenutzer.getNewPass()));
@@ -86,21 +103,33 @@ public class BenutzerHelper implements BenutzerHelperRemote {
         entityManager.flush();
 
     }
-
+     /**
+     * Ermittelt einen Benutzer nach seiner ID
+     * @param uid
+     * Die Id des Benutzers
+     * @return
+     * der Benutzer
+     */
     @Override
+   
     public Benutzer getBenutzerByID(int uid) {
-
-        benutzerliste = getBenutzerlist();
-
-        for (Benutzer u : benutzerliste) {
-            if (u.getId().equals((Integer) uid)) {
-                dbBenutzer = u;
-                return dbBenutzer;
-            }
+Benutzer b;
+        Query q = entityManager.createQuery("SELECT b FROM Benutzer b WHERE b.id = :id");
+        q.setParameter("id", uid);
+        try {
+            b = (Benutzer) q.getSingleResult();
+        } catch (NoResultException nr) {
+            return null;
         }
-
-        return dbBenutzer;
+        return b;
     }
+      /**
+     * Ermittelt einen Benutzer nach seinem Benutzernamen
+     * @param benutzername
+     * Die Id des Benutzers
+     * @return
+     * der Benutzer
+     */
 
     @Override
     public Benutzer getBenutzerByBenutzername(String benutzername) {
@@ -112,30 +141,23 @@ public class BenutzerHelper implements BenutzerHelperRemote {
         } catch (NoResultException nr) {
             return null;
         }
-//        benutzerliste = getBenutzerlist();
-//
-//        for (Benutzer u : benutzerliste) {
-//            if (u.getBenutzername().equals(benutzername)) {
-//                dbBenutzer = u;
-//                return dbBenutzer;
-//            }
-//            
-//            else
-//            {
-//                
-//            }
-//        }
-
         return b;
     }
-
+/**
+ * zählt die Benutzer
+ * @return 
+ */
     @Override
     public int countBenutzers() {
 
         i = getBenutzerlist().size();
         return i;
     }
-
+/**
+ * Die Liste der Benutzer
+ * @return 
+ * Gibt die Liste der Benutzer zurück
+ */
     @Override
     public List getBenutzerlist() {
         Query query = entityManager.createQuery("SELECT b FROM Benutzer b");
@@ -145,7 +167,6 @@ public class BenutzerHelper implements BenutzerHelperRemote {
 
     /**
      * Setzt die Liste aller Benutzer
-     *
      * @param benutzerliste
      */
     @Override
@@ -153,8 +174,14 @@ public class BenutzerHelper implements BenutzerHelperRemote {
         this.benutzerliste = benutzerliste;
     }
 
+    /**
+     * Setzt den Vermerk bei dem übergebenen Benutzer
+     * @param helpBenutzer 
+     * Der Benutzer
+     */
     @Override
     public void setVermerk(Benutzer helpBenutzer) {
+        
         this.dbBenutzer = helpBenutzer;
         dbBenutzer.setVermerk(helpBenutzer.getVermerk());
         dbBenutzer.setPassAgain("");
@@ -167,13 +194,16 @@ public class BenutzerHelper implements BenutzerHelperRemote {
     @Override
     public String getBenutzerVermerkById(int id) {
 
-        benutzerliste = getBenutzerlist();
-        for (Benutzer u : benutzerliste) {
-            if (u.getId().equals((Integer) id)) {
-                helpstring = u.getVermerk();
-            }
+Benutzer b;
+        Query q = entityManager.createQuery("SELECT b FROM Benutzer b WHERE b.id = :id");
+        q.setParameter("id", id);
+        try {
+            b = (Benutzer) q.getSingleResult();
+        } catch (NoResultException nr) {
+            return null;
         }
-        return helpstring;
-
+        return b.getVermerk();
     }
-}
+    }
+
+

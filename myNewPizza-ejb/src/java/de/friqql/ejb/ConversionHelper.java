@@ -30,8 +30,10 @@ public class ConversionHelper implements ConversionHelperRemote {
   
     /**
      * Ändert das Format eines Datums
-     * @param date
+     * @param 
+     * date
      * @return 
+     * Gibt das Datum wieder aus
      */
     @Override
     public Date ConvertDate(Date date) {
@@ -50,7 +52,9 @@ public class ConversionHelper implements ConversionHelperRemote {
 /**
  * Hasht ein Passwort
  * @param input
- * @return 
+ * Das Passwort
+ * @return
+ * Gibt das Passwort aus
  */
     @Override
     public String hash(String input) {

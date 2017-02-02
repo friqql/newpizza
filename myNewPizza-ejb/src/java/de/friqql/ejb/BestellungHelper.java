@@ -34,6 +34,9 @@ double sum;
 int num;
 private List<Bestellung> od;
 
+/**
+ * Der Standardkonstruktor des BestellungHelpers
+ */
     public BestellungHelper() {
         od = new ArrayList();
     }
@@ -41,7 +44,11 @@ private List<Bestellung> od;
     
 
 
-
+/**
+ * Die Summe der bestellten Speisen des Tages
+ * @return 
+ * Gibt die Summe zurück
+ */
     @Override
     public double sumBestellungedToday(){
         Query query = entityManager.createQuery("SELECT b FROM Bestellung b WHERE b.since = CURRENT_DATE");
@@ -60,6 +67,11 @@ private List<Bestellung> od;
         return sum;
     }
     
+    /**
+     * Die Anzahl der besellten Speisen des Tages
+     * @return 
+     * Gibt die Anzahl zurück
+     */
     @Override
     public int numBestellungedToday(){
     num = 0;
@@ -74,6 +86,11 @@ private List<Bestellung> od;
     
     return num;
 }
+    /**
+     * Speichert eine Bestellung
+     * @param saveBestellung 
+     * Die Bestellung die gespeichert werden soll
+     */
     @Override
     public void storeBestellung(Bestellung saveBestellung){
     entityManager.merge(saveBestellung);

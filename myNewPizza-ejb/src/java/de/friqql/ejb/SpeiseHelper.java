@@ -11,6 +11,7 @@ package de.friqql.ejb;
 
 
 import de.friqql.jb.SpeiseHelperRemote;
+import de.friqql.model.Benutzer;
 import de.friqql.model.Speise;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
@@ -37,39 +39,55 @@ public class SpeiseHelper implements SpeiseHelperRemote{
     
     @PersistenceContext(unitName = "myNewPizza-ejb", type= PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
-    private int speiseCount;
-    private Speise foundSpeise;
+    
 private List<Speise> speiselist;
 
+/**
+ * Der Standardkonstruktor des Speisehelpers
+ */
     public SpeiseHelper() {
         
         speiselist=new ArrayList();
     }
 
 
-
+/**
+ * Zählt die Speisen
+ * @return 
+ * Gibt die Anzahl zurück
+ */
     @Override
     public int countSpeise() {
-        Query query = entityManager.createQuery("SELECT s FROM Speise s");
-        List<Speise> lf=(List)query.getResultList();
-        speiseCount = lf.size();
-
-        return speiseCount;
+        int i;
+         Query query = entityManager.createQuery("SELECT s FROM Speise s");
+         speiselist = (List<Speise>) query.getResultList();
+         i = speiselist.size();
+         return i;
     }
 
+    /**
+     * Die Speise nach der ID
+     * @param fId
+     * Die Speise-Id
+     * @return 
+     * Gibt die Speise zurück
+     */
     @Override
     public Speise getSpeiseById(int fId) {
-        Query query = entityManager.createQuery("SELECT s FROM Speise s");
-        
-        speiselist = (List)query.getResultList();
-        
-        for(Speise s:speiselist){
-            if(s.getId().equals((Integer)fId)){
-                foundSpeise = s;
-            }
+        Speise s;
+        Query query = entityManager.createQuery("SELECT s FROM Speise s WHERE s.id =:id");
+        query.setParameter("id",fId);
+         try {
+            s = (Speise) query.getSingleResult();
+        } catch (NoResultException nr) {
+            return null;
         }
+        return s;
         
-        return foundSpeise;
+       
 
     }
+    
+    
+    
 }
